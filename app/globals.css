@@ -348,9 +348,3 @@
 .PhoneInputInput::placeholder {
   color: #1a1d21;
 }
-.card {
-  border-style: solid;
-  border-radius: 5px;
-  border-color: black;
-  padding: 2em;
-}
