@@ -1,33 +1,22 @@
-// src/App.tsx
 import PatientForm from '@/components/forms/PatientForm';
 import React from 'react';
 import Card from '../components/card/card';
 import Link from 'next/link';
 import Image from 'next/image';
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <Card
-//         title="No Image Card"
-//         description="This is a card without an image."
-//       />
-//     </div>
-//   );
-// }
+import sticker from '/assets/images/sticker.jpg';
 
 export default function Home() {
   return (
-    <div className="flex h-screen max-h-screen">
+    <div className="flex h-screen max-h-screen bg-gradient-to-br from-[#253369] to-[#061133] text-white">
         <section className="remove-scrollbar container my-auto mx-auto">
           <div className="sub-container max-w-[496px]">
-            <h1>HealthFlex-Online</h1>
+            <p className='text-4xl font-bold'>HealthFlex-Online</p>
 
             <PatientForm />
 
             <div className='tex-14-regular mt-20 flex justify-between'>
               <p className='justify-items-end text-dark-600 xl:text-left'>
-                HealthFlex
+                ©HealthFlex
               </p>
               <Link href="/?admin=true" className="text-green-500">
                 Admin
@@ -36,12 +25,13 @@ export default function Home() {
           </div>
         </section>
 
-        <Image  
-          src={require('/assets/images/damn.jpg')}
-          height={1000}
+        <Image 
+          src={sticker}
+          alt="Placeholder image"
           width={1000}
-          alt='placeholder'
-          className='side-img max-w-[50%]'
+          height={1000}
+          objectFit='contain'
+          className='side-img max-w-[70%] rounded-l-3xl'
         />
     </div>
   )

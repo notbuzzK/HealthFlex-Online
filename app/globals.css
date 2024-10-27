@@ -29,16 +29,16 @@
 @layer utilities {
   /* ===== UTILITIES */
   .sidebar {
-    @apply remove-scrollbar w-full max-w-72 flex-col overflow-auto bg-black-800 px-7 py-10;
-  }
+    @apply remove-scrollbar w-full max-w-72 md:max-w-64 lg:max-w-56 xl:max-w-72 flex-col overflow-auto bg-black-800 px-7 py-10;
+  }  
 
   .left-sidebar {
     @apply hidden lg:flex;
   }
-
+  
   .right-sidebar {
     @apply hidden xl:flex;
-  }
+  }  
 
   .clip-text {
     @apply bg-clip-text text-transparent;
@@ -49,20 +49,20 @@
   }
 
   .header {
-    @apply text-32-bold md:text-36-bold;
+    @apply text-24-bold sm:text-28-bold md:text-32-bold lg:text-36-bold;
   }
-
+  
   .sub-header {
-    @apply text-18-bold md:text-24-bold;
-  }
+    @apply text-16-bold sm:text-18-bold md:text-20-bold lg:text-24-bold;
+  }  
 
   .container {
-    @apply relative flex-1 overflow-y-auto px-[5%];
+    @apply relative flex-1 overflow-y-auto px-4 md:px-8 lg:px-12;
   }
-
+  
   .sub-container {
-    @apply mx-auto flex size-full flex-col py-10;
-  }
+    @apply mx-auto flex size-full flex-col py-6 md:py-8 lg:py-10;
+  }  
 
   .side-img {
     @apply hidden h-full object-cover md:block;
@@ -96,7 +96,7 @@
 
   /* ==== FORM */
   .radio-group {
-    @apply flex h-full flex-1 items-center gap-2 rounded-md border border-dashed border-dark-500 bg-dark-400 p-3;
+    @apply flex h-full flex-1 items-center gap-2 rounded-md border border-dashed border-dark-500 bg-dark-400 p-3 md:p-4;
   }
 
   .checkbox-label {
@@ -105,7 +105,7 @@
 
   /* ==== File Upload */
   .file-upload {
-    @apply text-12-regular flex cursor-pointer  flex-col items-center justify-center gap-3 rounded-md border border-dashed border-dark-500 bg-dark-400 p-5;
+    @apply text-12-regular flex cursor-pointer flex-col items-center justify-center gap-3 rounded-md border border-dashed border-dark-500 bg-dark-400 p-4 md:p-5;
   }
 
   .file-upload_label {
