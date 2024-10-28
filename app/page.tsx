@@ -1,6 +1,5 @@
-import PatientForm from '@/components/forms/PatientForm';
+import LoginForm from '@/components/forms/LoginForm';
 import React from 'react';
-import Card from '../components/card/card';
 import Link from 'next/link';
 import Image from 'next/image';
 import sticker from '/assets/images/sticker.jpg';
@@ -12,7 +11,7 @@ export default function Home() {
           <div className="sub-container max-w-[496px]">
             <p className='text-4xl font-bold'>HealthFlex-Online</p>
 
-            <PatientForm />
+            <LoginForm />
 
             <div className='tex-14-regular mt-20 flex justify-between'>
               <p className='justify-items-end text-dark-600 xl:text-left'>
