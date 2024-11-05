@@ -3,6 +3,7 @@ import PatientForm from "@/components/forms/PatientForm";
 import Image from "next/image";
 import HealthflexLogo from "/assets/images/HealthflexLogo.png"
 
+
 export default function Page() {
   return (
       <div className="min-h-screen bg-gradient-to-br from-[#253369] to-[#061133] text-white">

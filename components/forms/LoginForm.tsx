@@ -22,13 +22,17 @@ import { PasswordInput } from "@/components/ui/password-input"
 
 
 const formSchema = z.object({
-  userName: z.string(),
+  email: z.string(),
   password: z.string()
 });
 
 export default function LogintForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: ""
+    },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -53,7 +57,7 @@ export default function LogintForm() {
       >
         <FormField
           control={form.control}
-          name="userName"
+          name="email"
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-sm font-bold">Email</FormLabel>
