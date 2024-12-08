@@ -9,7 +9,7 @@ export default function Home() {
     <div className="flex h-screen max-h-screen bg-gradient-to-br from-[#253369] to-[#061133] text-white">
         <section className="remove-scrollbar container my-auto mx-auto">
           <div className="sub-container max-w-[496px]">
-            <p className='text-4xl font-bold'>HealthFlex-Online</p>
+            <p className='text-4xl font-bold'>HealthFlex-<span className="text-[#E2C044]">Online</span></p>
 
             <LoginForm />
 
@@ -27,9 +27,6 @@ export default function Home() {
         <Image 
           src={sticker}
           alt="Placeholder image"
-          width={1000}
-          height={1000}
-          objectFit='contain'
           className='side-img max-w-[70%] rounded-l-3xl'
         />
     </div>

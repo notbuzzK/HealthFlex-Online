@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from '@/lib/utils'
+import { Toaster } from "sonner";
 
 const fontSans = Plus_Jakarta_Sans ({
   subsets: ["latin"],
@@ -21,8 +22,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={ cn('min-h-screen b-dark-300 font-sans antialiased', fontSans.variable) }>{children}</body>
+      <body className={ cn('min-h-screen b-dark-300 font-sans antialiased', fontSans.variable) }>{children}
+      <Toaster position="top-right" /> {/* Place it in your app's layout */}
+      {children}
+
+      </body>
     </html>
+    
   );
 }
 

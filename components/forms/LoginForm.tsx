@@ -1,53 +1,55 @@
-"use client"
- 
-import Link from 'next/link';
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
-import { Button } from "@/components/ui/button"
+"use client";
+
+import { useRouter } from "next/navigation"; // Import the useRouter hook
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { cn } from "@/lib/utils"
-import { useState } from "react"
-import { toast } from "sonner"
-import { Input } from "@/components/ui/input"
-import { PasswordInput } from "@/components/ui/password-input"
-
+} from "@/components/ui/form";
+import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
+import { loginUser } from "@/lib/actions/patient.actions";
 
 const formSchema = z.object({
-  email: z.string(),
-  password: z.string()
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-export default function LogintForm() {
+export default function LoginForm() {
+  const router = useRouter(); // Initialize useRouter inside the component
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
-      password: ""
+      password: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      console.log(values);
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
-    } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
-    }
+    loginUser(values)
+      .then((response) => {
+        toast.success("Login successful! Welcome back!");
+        console.log("Session:", response.session); // Handle session as needed
+        router.push("/user-dash"); // Redirect to the dashboard
+      })
+      .catch((error) => {
+        toast.error(error.message || "Login failed. Please check your credentials.");
+        console.error("Login error:", error);
+      });
   }
+
+  const goToSignUp = () => {
+    router.push("/sign-up"); // Navigate to the sign-up page
+  };
 
   return (
     <Form {...form}>
@@ -69,7 +71,6 @@ export default function LogintForm() {
                   {...field}
                 />
               </FormControl>
-              <FormDescription>This is your public display name.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -82,23 +83,24 @@ export default function LogintForm() {
             <FormItem>
               <FormLabel className="text-sm font-bold">Password</FormLabel>
               <FormControl>
-                <PasswordInput 
+                <PasswordInput
                   className="w-full p-2 border rounded bg-gradient-to-r from-white to-gray-400"
-                  placeholder="Enter your password" 
+                  placeholder="Enter your password"
                   {...field}
                 />
               </FormControl>
-              <FormDescription>Enter your password.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button type="submit" className="w-full p-2 rounded bg-[#E2C044] border border-gray-400">Submit</Button>
+        <Button type="submit" className="w-full p-2 rounded bg-[#E2C044] border border-gray-400">
+          Submit
+        </Button>
       </form>
-      <Link href="/sign-up" className='cursor-pointer text-sm'>
-        Don't have an account? <span className='text-[#E2C044]'>Create one here.</span>
-      </Link>
+      <p className="cursor-pointer text-sm" onClick={goToSignUp}>
+        Don't have an account? <span className="text-[#E2C044]">Create one here.</span>
+      </p>
     </Form>
   );
 }
