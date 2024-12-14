@@ -36,54 +36,69 @@ import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { makeAppointment } from "@/lib/actions/patient.actions"
 import { SmartDatetimeInput } from "@/components/extension/smart-date-time-input"
+import { account } from "@/lib/appwrite.config"
+import moment from "moment"
 
 const formSchema = z.object({
-  Service: z.string(),
-  Date: z.coerce.date(),
+  service: z.string(),
+  dateTime: z.coerce.date(),
   reason: z.string().optional(),
   notes: z.string().optional()
 });
 
 export default function MyForm() {
   const router = useRouter();
+  //onst user = account.get();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      Date: new Date(),
+      dateTime: new Date(),
       reason: "",
       notes: ""
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    const appointmentValues = {
-      Service: values.Service,
-      Date: values.Date,
-      reason: values.reason || '',
-      note: values.notes || '',
-    };
-    makeAppointment(appointmentValues)
-    .then((response) => {
-     toast.success("Appointment made successfully!");
-     console.log("Session:", );
-   })
-   .catch((error) => {
-     toast.error(error.message || "Appointment creation failed");
-     console.error("Appointment error:", error);
-   })
-  }
+  type AppointmentStatus = "pending" | "approved" | "declined";
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      // Fetch logged-in user details using client-side SDK
+      const user = await account.get();
+      console.log(user.$id);
+      const appointmentValues = {
+        service: values.service,
+        reason: values.reason || "",
+        note: values.notes || "",
+        dateTime: moment(values.dateTime).toISOString(),
+        userId: user.$id, // Link the appointment to the user
+        status: "pending" as AppointmentStatus,
+      };
+      console.log(appointmentValues.userId);
 
+  
+      const response = await makeAppointment(appointmentValues);
+      toast.success("Appointment made successfully!");
+      router.push("/user-dash");
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message || "Appointment creation failed");
+      } else {
+        toast.error("Unknown error occurred.");
+      }
+      console.error("Error creating appointment:", error);
+    }
+  }
+  
   return (
     <div className="min-h-screen remove-scrollbar bg-gradient-to-br from-[#253369] to-[#061133] flex">
       <section className="m-auto bg-gradient-to-br from-[#D9D9D9] to-[#737373] drop-shadow-xl rounded-3xl p-5 w-[70%]">
         <p className="text-4xl font-bold">Appointment</p>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 max-w-3xl mx-auto py-10">
-            
+
             <FormField
               control={form.control}
-              name="Service"
+              name="service"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-lg font-bold">Service</FormLabel>
@@ -114,7 +129,7 @@ export default function MyForm() {
               <div className="col-span-12">
                 <FormField
                   control={form.control}
-                  name="Date"
+                  name="dateTime"
                   render={({ field }) => (
                   <FormItem>
                     <FormLabel className="text-lg font-bold">Date and Time</FormLabel>
@@ -123,7 +138,7 @@ export default function MyForm() {
                         value={field.value}
                         onValueChange={field.onChange}
                         placeholder="e.g. Tomorrow morning 9am"
-                        className="resize-none rounded bg-gradient-to-r from-[#253369] to-[#061133] text-white"
+                        className="resize-none rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
                         
                       />
                     </FormControl>
@@ -178,8 +193,8 @@ export default function MyForm() {
               </div>
             </div>
             <div className="flex justify-end gap-4">
-              <Button type="submit" className="bg-white- text-white rounded-3xl " onClick={() => router.push("/user-dash")}>Cancel</Button>
-              <Button type="button" className="bg-[#E2C044] text-white drop-shadow-lg rounded-3xl">Book</Button>
+              <Button type="button" className="bg-white- text-white rounded-3xl " onClick={() => router.push("/user-dash")}>Cancel</Button>
+              <Button type="submit" className="bg-[#E2C044] text-white drop-shadow-lg rounded-3xl">Book</Button>
             </div>
           </form>
         </Form>

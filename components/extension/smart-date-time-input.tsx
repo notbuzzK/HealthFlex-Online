@@ -479,7 +479,7 @@ const NaturalLanguageInput = React.forwardRef<
       onChange={(e) => setInputValue(e.currentTarget.value)}
       onKeyDown={handleKeydown}
       onBlur={handleParse}
-      className={cn("px-2 mr-0.5 flex-1 border-none h-8 rounded", inputBase)}
+      className={cn("px-2 mr-0.5 flex-1 border-none h-8 rounded !text-white", inputBase)}
       {...props}
     />
   );
@@ -523,7 +523,7 @@ const DateTimeLocalInput = ({
           size={"icon"}
           className={cn(
             "size-9 flex items-center justify-center font-normal rounded",
-            !value && "text-muted-foreground",
+            !value && "text-muted-foreground !text-white",
           )}
         >
           <CalendarIcon className="size-4" />
