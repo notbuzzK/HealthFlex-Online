@@ -13,32 +13,25 @@ export default function SignUp() {
 
   return (
     <div className="bg-gradient-to-br remove-scrollbar from-[#253369] to-[#061133] text-black">
-      <section className="container min-h-screen remove-scrollbar grid grid-cols-1 grid-rows-auto gap-4 md:grid-cols-6 md:grid-rows-6">
+      <section className="container min-h-screen remove-scrollbar grid grid-flow-row md:grid-cols-6 md:grid-rows-6 gap-4">
 
-        {/* Make Appointment Section */}
-        <div className="bg-gradient-to-br from-[#D9D9D9] to-[#737373] drop-shadow-xl col-span-1 md:col-span-3 row-span-1 md:row-span-2 m-4 rounded-3xl">
-          <div className="m-4 grid grid-flow-row grid-rows-3 h-5/6">
+        {/* Make Appointment */}
+        <div className="bg-gradient-to-br from-[#D9D9D9] to-[#737373] drop-shadow-xl  md:col-span-3 md:row-span-2 m-4 rounded-3xl">
+          <div className="h-full w-full p-5 grid gridrow3">
             <p className="text-4xl font-bold">Make Appointment</p>
             <p>Ready to make an appointment? Click the button below!</p>
             <Button 
               onClick={handleMakeAppointment} 
-              className="rounded-3xl bg-[#E2C044]"
+              className="rounded-3xl bg-[#E2C044] drop-shadow-lg"
             >
               Make Appointment
             </Button>
           </div>
         </div>
 
-        {/* Appointments Section */}
-        <div className="bg-gradient-to-br from-[#D9D9D9] to-[#737373] drop-shadow-xl col-span-1 md:col-span-3 row-span-1 md:row-span-4 m-4 rounded-3xl">
-          <div className="m-4">
-            <p className="text-4xl font-bold">Appointments</p>
-          </div>
-        </div>
-
-        {/* Profile Section */}
-        <div className="bg-gradient-to-br from-[#D9D9D9] to-[#737373] drop-shadow-xl col-span-1 md:col-span-3 row-span-1 md:row-span-6 m-4 rounded-3xl">
-          <div className="m-4">
+        {/* Profile */}
+        <div className="bg-gradient-to-br from-[#D9D9D9] to-[#737373] drop-shadow-xl  md:col-span-3 md:row-span-6 m-4 rounded-3xl">
+          <div className="p-5">
             <p className="text-4xl font-bold">Profile</p>
             <p>Name: </p>
             <p>Email: </p>
@@ -50,6 +43,15 @@ export default function SignUp() {
             <p>Medical Concerns: </p>
           </div>
         </div>
+
+        {/* Appointments */}
+        <div className="bg-gradient-to-br from-[#D9D9D9] to-[#737373] drop-shadow-xl  md:col-span-3 md:row-span-4 m-4 rounded-3xl">
+          <div className="p-5">
+            <p className="text-4xl font-bold">Appointments</p>
+          </div>
+        </div>
+
+        
       </section>
     </div>
   );

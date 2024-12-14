@@ -3,6 +3,7 @@ import * as sdk from "node-appwrite";
 
 const DATABASE_ID = '6720cc9c000049efcd3c';
 const PATIENT_COLLECTION_ID = '6720ccbd0028468dee7e';
+const APPOINTMENT_COLLECTION_ID = '6720ccbd0028468dee7e';
 
 export async function loginUser({
   email,
@@ -81,5 +82,37 @@ export async function registerUser({
   } catch (error) {
     console.error("Registration error:", error);
     throw new Error("Registration failed. Please try again.");
+  }
+}
+
+// Function to make an appointment
+export async function makeAppointment({
+  Service,
+  Date,
+  reason,
+  note,
+}: {
+  Service: string;
+  Date: Date;
+  reason: string;
+  note: string;  
+}) {
+  try {
+    const appointment = await databases.createDocument(
+      DATABASE_ID,
+      APPOINTMENT_COLLECTION_ID,
+      "unique()",
+      {
+        Service,
+        Date,
+        reason,
+        note,
+      }
+    );
+
+    return { success: true, appointment };
+  } catch (error) {
+    console.error("Appointment error:", error);
+    throw new Error("Appointment failed. Please try again.");
   }
 }
