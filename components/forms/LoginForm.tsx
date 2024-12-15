@@ -38,8 +38,7 @@ export default function LoginForm() {
     loginUser(values)
       .then((response) => {
         toast.success("Login successful! Welcome back!");
-        console.log("Session:", response.session); // Handle session as needed
-        router.push("/user-dash"); // Redirect to the dashboard
+        router.push("/src/user-dash")
       })
       .catch((error) => {
         toast.error(error.message || "Login failed. Please check your credentials.");

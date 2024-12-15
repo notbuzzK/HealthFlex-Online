@@ -1,5 +1,10 @@
+"use client"
+
 import { account, databases } from "@/lib/appwrite.config";
 import * as sdk from "node-appwrite";
+import { Query } from "appwrite";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const DATABASE_ID = '6720cc9c000049efcd3c';
 const PATIENT_COLLECTION_ID = '6720ccbd0028468dee7e';
@@ -89,19 +94,25 @@ type appointmentStatus = "pending" | "approved" | "declined";
 
 // Function to make an appointment
 export async function makeAppointment({
-  service,
+  lab,
+  packages,
+  consultation,
   reason,
   note,
   dateTime,
   userId,
   status,
+  fullName,
 }: {
-  service: string;
+  lab: string[];
+  packages: string[];
+  consultation: string[];
   reason: string;
   note: string;
   dateTime: string;
   userId: string;
   status: appointmentStatus;
+  fullName: string;
 }) {
   try {
     const appointment = await databases.createDocument(
@@ -109,12 +120,15 @@ export async function makeAppointment({
       APPOINTMENT_COLLECTION_ID,
       "unique()",
       {
-        service,
+        lab,
+        packages,
+        consultation,
         reason,
         note,
         dateTime,
         userId,
         status,
+        fullName,
       },
       [
         sdk.Permission.read("users"),
@@ -126,5 +140,60 @@ export async function makeAppointment({
   } catch (error) {
     console.error("Error creating appointment:", error);
     throw error;
+  }
+}
+
+export async function getUserAppointments(userId: string) {
+  try {
+    const appointments = await databases.listDocuments(
+      DATABASE_ID,
+      APPOINTMENT_COLLECTION_ID,
+      [
+        Query.contains("userId", userId),
+        Query.select(["status", "dateTime", "lab", "packages", "consultation"]),
+      ] 
+  );
+    return appointments.documents;
+  } catch (error) {
+    console.error("Error fetching appointments:", error);
+    throw error;
+  }
+}
+
+
+export async function getUserInfo() {
+  try {
+    const user = await account.get();
+    const userEmail = user.email;
+
+    const userDocuments = await databases.listDocuments(
+      DATABASE_ID!,
+      PATIENT_COLLECTION_ID!,
+      [Query.equal("email", userEmail)]
+    );
+
+    if (userDocuments.documents.length === 0) {
+      throw new Error("User not found in the Patient collection.");
+    }
+
+    return userDocuments.documents[0];
+  } catch (error) {
+    console.error("Error fetching user info:", error);
+    throw error;
+  }
+}
+
+export async function userLogout() {
+  try {
+    await account.deleteSession("current");
+    toast.success("Logout successful!");
+    const router = useRouter();
+    router.push("/src/login");
+    return { success: true };
+  } catch (error) {
+    const router = useRouter();
+    router.push("/src/login");
+    // toast.error("Logout failed. Please try again.");
+    // throw error; // Rethrow the error
   }
 }

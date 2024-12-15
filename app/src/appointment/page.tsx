@@ -38,9 +38,19 @@ import { makeAppointment } from "@/lib/actions/patient.actions"
 import { SmartDatetimeInput } from "@/components/extension/smart-date-time-input"
 import { account } from "@/lib/appwrite.config"
 import moment from "moment"
+import {
+  MultiSelector,
+  MultiSelectorContent,
+  MultiSelectorInput,
+  MultiSelectorItem,
+  MultiSelectorList,
+  MultiSelectorTrigger
+} from "@/components/extension/multi-select"
 
 const formSchema = z.object({
-  service: z.string(),
+  lab: z.array(z.string()).nonempty("Please at least one item").optional(),
+  packages: z.array(z.string()).nonempty("Please at least one item").optional(),
+  consultation: z.array(z.string()).nonempty("Please at least one item").optional(),
   dateTime: z.coerce.date(),
   reason: z.string().optional(),
   notes: z.string().optional()
@@ -62,23 +72,25 @@ export default function MyForm() {
   type AppointmentStatus = "pending" | "approved" | "declined";
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      // Fetch logged-in user details using client-side SDK
       const user = await account.get();
       console.log(user.$id);
       const appointmentValues = {
-        service: values.service,
+        lab: values.lab || [],
+        packages: values.packages || [],
+        consultation: values.consultation || [],
         reason: values.reason || "",
         note: values.notes || "",
         dateTime: moment(values.dateTime).toISOString(),
-        userId: user.$id, // Link the appointment to the user
+        userId: user.$id, 
         status: "pending" as AppointmentStatus,
+        fullName: user.name,
       };
       console.log(appointmentValues.userId);
 
   
       const response = await makeAppointment(appointmentValues);
       toast.success("Appointment made successfully!");
-      router.push("/user-dash");
+      router.push("/src/user-dash");
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message || "Appointment creation failed");
@@ -92,38 +104,127 @@ export default function MyForm() {
   return (
     <div className="min-h-screen remove-scrollbar bg-gradient-to-br from-[#253369] to-[#061133] flex">
       <section className="m-auto bg-gradient-to-br from-[#D9D9D9] to-[#737373] drop-shadow-xl rounded-3xl p-5 w-[70%]">
-        <p className="text-4xl font-bold">Appointment</p>
+        <p className="text-2xl md:text-4xl font-bold">Appointment</p>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 max-w-3xl mx-auto py-10">
 
-            <FormField
+          <div className="grid md:grid-cols-12 gap-4">
+          
+          <div className="col-span-4">
+            
+           <FormField
               control={form.control}
-              name="service"
+              name="lab"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-lg font-bold">Service</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger className="rounded bg-gradient-to-r from-[#253369] to-[#061133] text-white">
-                        <SelectValue placeholder="Click to select" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent className="bg-gray-300 rounded cursor-pointer">
-                      <SelectItem value="Routine Laboratory Tests">Routine Laboratory Tests</SelectItem>
-                      <SelectItem value="Drug Testing">Drug Testing</SelectItem>
-                      <SelectItem value="X-RAY">X-RAY</SelectItem>
-                      <SelectItem value="ECG">ECG</SelectItem>
-                      <SelectItem value="Swab Testing">Swab Testing</SelectItem>
-                      <SelectItem value="Annual Physical Examination">Annual Physical Examination</SelectItem>
-                      <SelectItem value="Pre-Employment Medical">Pre-Employment Medical</SelectItem>
-                      <SelectItem value="Consultation">Consultation</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormDescription>Select service you need</FormDescription>
+                  <FormLabel className="text-lg font-bold">Lab services</FormLabel>
+                  <FormControl>
+                    <MultiSelector
+                      values={field.value ?? []}
+                      onValuesChange={field.onChange}
+                      loop
+                      className="max-w-xs rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
+                    >
+                      <MultiSelectorTrigger>
+                        <MultiSelectorInput placeholder="select services" />
+                      </MultiSelectorTrigger>
+                      <MultiSelectorContent>
+                      <MultiSelectorList className="bg-gray-300 rounded text-black">
+                        <MultiSelectorItem value={"Basic Tests"}>Basic Tests</MultiSelectorItem>
+                        <MultiSelectorItem value={"Enzymes"}>Enzymes</MultiSelectorItem>
+                        <MultiSelectorItem value={"Hepatitis"}>Hepatitis</MultiSelectorItem>
+                        <MultiSelectorItem value={"Thyroid Function"}>Thyroid Function</MultiSelectorItem>
+                        <MultiSelectorItem value={"Hematology"}>Hematology</MultiSelectorItem>
+                        <MultiSelectorItem value={"Electrolytes"}>Electrolytes</MultiSelectorItem>
+                        <MultiSelectorItem value={"Serology"}>Serology</MultiSelectorItem>
+                        <MultiSelectorItem value={"Hormones"}>Hormones</MultiSelectorItem>
+                        <MultiSelectorItem value={"Blood Chemistry"}>Blood Chemistry</MultiSelectorItem>
+                        <MultiSelectorItem value={"Clinical Microscopy"}>Clinical Microscopy</MultiSelectorItem>
+                        <MultiSelectorItem value={"Bacteriology"}>Bacteriology</MultiSelectorItem>
+                        <MultiSelectorItem value={"Tumor Markers"}>Tumor Markers</MultiSelectorItem>
+                      </MultiSelectorList>
+                      </MultiSelectorContent>
+                    </MultiSelector>
+                  </FormControl>
+                  <FormDescription>Select multiple, if any</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
+          </div>
+          
+          <div className="col-span-4">
+            
+           <FormField
+              control={form.control}
+              name="packages"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-lg font-bold">Packages</FormLabel>
+                  <FormControl>
+                    <MultiSelector
+                      values={field.value ?? []}
+                      onValuesChange={field.onChange}
+                      loop
+                      className="max-w-xs rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
+                    >
+                      <MultiSelectorTrigger>
+                        <MultiSelectorInput placeholder="Select packages" />
+                      </MultiSelectorTrigger>
+                      <MultiSelectorContent>
+                      <MultiSelectorList className="bg-gray-300 rounded text-black">
+                        <MultiSelectorItem value={"Buntis Package"}>Buntis Package</MultiSelectorItem>
+                        <MultiSelectorItem value={"CHEM 5"}>CHEM 5</MultiSelectorItem>
+                        <MultiSelectorItem value={"CHEM 6"}>CHEM 6</MultiSelectorItem>
+                        <MultiSelectorItem value={"CHEM 8"}>CHEM 8</MultiSelectorItem>
+                        <MultiSelectorItem value={"CHEM 10"}>CHEM 10</MultiSelectorItem>
+                        <MultiSelectorItem value={"CHEM 12"}>CHEM 12</MultiSelectorItem>
+                      </MultiSelectorList>
+                      </MultiSelectorContent>
+                    </MultiSelector>
+                  </FormControl>
+                  <FormDescription>Select multiple, if any</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          
+          <div className="col-span-4">
+            
+           <FormField
+              control={form.control}
+              name="consultation"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-lg font-bold">Consulation</FormLabel>
+                  <FormControl>
+                    <MultiSelector
+                      values={field.value ?? []}
+                      onValuesChange={field.onChange}
+                      loop
+                      className="max-w-xs rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
+                    >
+                      <MultiSelectorTrigger>
+                        <MultiSelectorInput placeholder="Select consultation" />
+                      </MultiSelectorTrigger>
+                      <MultiSelectorContent>
+                      <MultiSelectorList className="bg-gray-300 rounded text-black">
+                        <MultiSelectorItem value={"OB-GYNE"}>OB-GYNE</MultiSelectorItem>
+                        <MultiSelectorItem value={"PEDIATRICIAN"}>PEDIATRICIAN</MultiSelectorItem>
+                        <MultiSelectorItem value={"GENERAL PHYSICIAN"}>GENERAL PHYSICIAN</MultiSelectorItem>
+                      </MultiSelectorList>
+                      </MultiSelectorContent>
+                    </MultiSelector>
+                  </FormControl>
+                  <FormDescription>Select multiple, if any</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          
+        </div>
 
             <div className="grid grid-cols-12 gap-4">
               <div className="col-span-12">
@@ -151,7 +252,7 @@ export default function MyForm() {
 
             </div>
 
-            <div className="grid grid-cols-12 gap-4">
+            <div className="grid md:grid-cols-12 gap-4">
               <div className="col-span-6">
                 <FormField
                   control={form.control}
@@ -193,7 +294,7 @@ export default function MyForm() {
               </div>
             </div>
             <div className="flex justify-end gap-4">
-              <Button type="button" className="bg-white- text-white rounded-3xl " onClick={() => router.push("/user-dash")}>Cancel</Button>
+              <Button type="button" className="bg-white- text-white rounded-3xl " onClick={() => router.push("/src/user-dash")}>Cancel</Button>
               <Button type="submit" className="bg-[#E2C044] text-white drop-shadow-lg rounded-3xl">Book</Button>
             </div>
           </form>

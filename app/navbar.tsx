@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import Logo from "/assets/images/Logo.png"
+import Logo from "/assets/images/HealthFlexLogo.png"
 
 export default function Navbar() {
   // State for tracking the hovered menu item

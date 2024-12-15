@@ -27,7 +27,7 @@ export const StatCard = ({ count = 0, label, type }: StatCardProps) => {
 
   return (
     <div
-      className="bg-gradient-to-br from-[#D9D9D9] to-[#737373] h-24 rounded-xl p-5"
+      className="bg-gradient-to-br from-[#D9D9D9] to-[#737373] h-24 rounded-xl p-5 flex items-center gap-4"
     >
       <div className="flex items-center gap-4">
         {icon}

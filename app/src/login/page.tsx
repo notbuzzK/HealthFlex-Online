@@ -10,7 +10,7 @@ import sticker from '/assets/images/Sticker.jpg';
 export default function Home() {
   return (
     <div className="flex h-screen max-h-screen bg-gradient-to-br from-[#253369] to-[#061133] text-white">
-        <sxection className="remove-scrollbar container my-auto mx-auto">
+        <section className="remove-scrollbar container my-auto mx-auto">
           <div className="sub-container max-w-[496px]">
             <p className='text-4xl font-bold'>HealthFlex-<span className="text-[#E2C044]">Online</span></p>
 
@@ -20,7 +20,7 @@ export default function Home() {
               <p className='justify-items-end text-dark-600 xl:text-left'>
                 ©HealthFlex
               </p>
-              <Link href="/admin" className="text-green-500">
+              <Link href="/src/admin" className="text-green-500">
                 Admin
               </Link>
             </div>

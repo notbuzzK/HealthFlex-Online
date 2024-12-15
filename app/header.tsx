@@ -3,7 +3,7 @@
 import React from "react";
 import Image from 'next/image'; 
 import { useSearch } from "./search-context";
-import Logo from "/assets/images/Logo.png"
+import Logo from "/assets/images/HealthFlexLogo.png"
 
 
 export default function Header({ resultsSectionRef }: { resultsSectionRef: React.RefObject<HTMLDivElement> }) {
