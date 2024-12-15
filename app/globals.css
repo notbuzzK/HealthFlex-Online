@@ -47,10 +47,11 @@
   .bg-image {
     @apply bg-black-900 bg-light-rays bg-cover bg-no-repeat;
   }
-
+ 
+  /*
   .header {
     @apply text-24-bold sm:text-28-bold md:text-32-bold lg:text-36-bold;
-  }
+  }*/
   
   .sub-header {
     @apply text-16-bold sm:text-18-bold md:text-20-bold lg:text-24-bold;
