@@ -97,7 +97,6 @@ export async function makeAppointment({
   lab,
   packages,
   consultation,
-  reason,
   note,
   dateTime,
   userId,
@@ -107,7 +106,6 @@ export async function makeAppointment({
   lab: string[];
   packages: string[];
   consultation: string[];
-  reason: string;
   note: string;
   dateTime: string;
   userId: string;
@@ -123,7 +121,6 @@ export async function makeAppointment({
         lab,
         packages,
         consultation,
-        reason,
         note,
         dateTime,
         userId,
@@ -150,7 +147,8 @@ export async function getUserAppointments(userId: string) {
       APPOINTMENT_COLLECTION_ID,
       [
         Query.contains("userId", userId),
-        Query.select(["status", "dateTime", "lab", "packages", "consultation"]),
+        Query.select(["status", "dateTime", "lab", "packages", "consultation", "reason",]),
+        Query.orderDesc('$createdAt'),
       ] 
   );
     return appointments.documents;
@@ -183,17 +181,47 @@ export async function getUserInfo() {
   }
 }
 
-export async function userLogout() {
+export async function userLogout(router: ReturnType<typeof useRouter>) {
   try {
     await account.deleteSession("current");
     toast.success("Logout successful!");
-    const router = useRouter();
     router.push("/src/login");
     return { success: true };
   } catch (error) {
-    const router = useRouter();
+    console.error("Error logging out:", error);
+    toast.error("Failed to log out. Redirecting to login page.");
     router.push("/src/login");
-    // toast.error("Logout failed. Please try again.");
-    // throw error; // Rethrow the error
+  }
+}
+
+
+export async function updateUserDocument(email: string, data: any) {
+  try {
+    const documentId = await databases.listDocuments(
+      DATABASE_ID,
+      PATIENT_COLLECTION_ID,
+      [
+        Query.equal("email", [email]),
+      ]
+    );
+
+    await databases.updateDocument(
+      DATABASE_ID,
+      PATIENT_COLLECTION_ID,
+      documentId.documents[0].$id, 
+      data, 
+    )
+
+    if (data.password && data.password !== "") {
+      await account.updatePassword(data.password, data.currentPassword);
+    }
+
+    if (data.fullName && data.fullName !== "") {
+      await account.updateName(data.fullName);
+    }
+
+  } catch (error) {
+    console.error("Error updating user document:", error);
+    throw error;
   }
 }

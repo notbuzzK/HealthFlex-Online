@@ -41,9 +41,6 @@ const items = [
   { id: "ph10",label: "ph10" },
 ] as const
 
-const DATABASE_ID='6720cc9c000049efcd3c';
-const PATIENT_COLLECTION_ID='6720ccbd0028468dee7e';
-
 const formSchema = z.object({
   fullName: z.string(),
   email: z.string().email(),
@@ -222,7 +219,7 @@ export default function PatientForm() {
                   <Input
                     className="border rounded bg-gradient-to-r from-white to-gray-400"
                     placeholder="0999xxxxxxx"
-                    type="text" // Ensure the input type is text
+                    type="text" // 
                     {...field}
                   />
                 </FormControl>

@@ -23,6 +23,19 @@ const UserAppointmentsTable = () => {
     };
     fetchAppointments();
   }, []);
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "pending":
+        return "text-[#6b26ff]";
+      case "approved":
+        return "text-[#56ff61]";
+      case "cancelled":
+        return "text-[#FF4F4E]";
+      default:
+        return "text-gray-500";
+    }
+  };
   
   
   return (
@@ -30,15 +43,16 @@ const UserAppointmentsTable = () => {
       <TableCaption>A list of your appointments.</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead>Status</TableHead>
+          <TableHead className='text-center'>Status</TableHead>
           <TableHead>Appointment</TableHead>
           <TableHead>Service</TableHead>
+          <TableHead>Reason</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {appointments.map((appointment: Document, index) => (
           <TableRow key={index}>
-            <TableCell className='text-green-500'>{appointment.status}</TableCell>
+            <TableCell className={`${getStatusColor(appointment.status)} py-4 px-2 capitalize font-bold text-center rounded`}>{appointment.status}</TableCell>
             <TableCell>
               {new Date(appointment.dateTime).toLocaleString('en-US', {
                 year: 'numeric',
@@ -51,6 +65,9 @@ const UserAppointmentsTable = () => {
             </TableCell>
             <TableCell>
               {[...appointment.lab, ...appointment.packages, ...appointment.consultation].join(', ')}
+            </TableCell>
+            <TableCell>
+              {appointment.reason}
             </TableCell>
           </TableRow>
         ))}

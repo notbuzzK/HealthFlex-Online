@@ -52,7 +52,6 @@ const formSchema = z.object({
   packages: z.array(z.string()).nonempty("Please at least one item").optional(),
   consultation: z.array(z.string()).nonempty("Please at least one item").optional(),
   dateTime: z.coerce.date(),
-  reason: z.string().optional(),
   notes: z.string().optional()
 });
 
@@ -64,7 +63,6 @@ export default function MyForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       dateTime: new Date(),
-      reason: "",
       notes: ""
     },
   });
@@ -78,7 +76,6 @@ export default function MyForm() {
         lab: values.lab || [],
         packages: values.packages || [],
         consultation: values.consultation || [],
-        reason: values.reason || "",
         note: values.notes || "",
         dateTime: moment(values.dateTime).toISOString(),
         userId: user.$id, 
@@ -253,33 +250,14 @@ export default function MyForm() {
             </div>
 
             <div className="grid md:grid-cols-12 gap-4">
-              <div className="col-span-6">
-                <FormField
-                  control={form.control}
-                  name="reason"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-lg font-bold">Reason for Appointment</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          className="resize-none rounded bg-gradient-to-r from-[#253369] to-[#061133] text-white"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormDescription>Enter reason for appointment (optional)</FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
 
-              <div className="col-span-6">
+              <div className="col-span-12">
                 <FormField
                   control={form.control}
                   name="notes"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-lg font-bold">Notes</FormLabel>
+                      <FormLabel className="text-lg font-bold">Note to Staff</FormLabel>
                       <FormControl>
                         <Textarea
                           className="resize-none rounded bg-gradient-to-r from-[#253369] to-[#061133] text-white"

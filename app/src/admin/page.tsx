@@ -2,18 +2,35 @@
 
 import AdminAppointmentsTable from "@/components/adminAppointmentTable";
 import { StatCard } from "@/components/StatCard";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-
+import { useState, useEffect } from 'react';
+import { getAllAppointments } from '@/lib/actions/admin.actions';
+import DailyAnalytics from "@/components/getDailyAnalytics";
 
 export default function Admin() {
+
+  const [appointments, setAppointments] = useState([]);
+  const [scheduledCount, setScheduledCount] = useState(0);
+  const [pendingCount, setPendingCount] = useState(0);
+  const [cancelledCount, setCancelledCount] = useState(0);
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      const appointments = await getAllAppointments();
+      setAppointments(appointments);
+
+      const scheduled = appointments.filter((appointment) => appointment.status === 'approved');
+      setScheduledCount(scheduled.length);
+
+      const pending = appointments.filter((appointment) => appointment.status === 'pending');
+      setPendingCount(pending.length);
+
+      const cancelled = appointments.filter((appointment) => appointment.status === 'cancelled');
+      setCancelledCount(cancelled.length);
+    };
+
+    fetchAppointments();
+  }, []);
+
   return (
     <div className="bg-gradient-to-br remove-scrollbar from-[#253369] to-[#061133] text-black">
       <section className="container min-h-screen remove-scrollbar grid grid-cols-6 grid-rows-4">
@@ -26,8 +43,8 @@ export default function Admin() {
             <section className="col-span-2">
               <StatCard
                 type="appointments"
-                count={1}
-                label="Scheduled appointments"
+                count={scheduledCount}
+                label="Approved appointments"
               />
             </section>
 
@@ -35,7 +52,7 @@ export default function Admin() {
             <section className="col-span-2">
               <StatCard
                 type="pending"
-                count={2}
+                count={pendingCount}
                 label="Pending appointments"
               />
             </section>
@@ -44,23 +61,21 @@ export default function Admin() {
             <section className="col-span-2">
               <StatCard
                 type="cancelled"
-                count={3}
+                count={cancelledCount}
                 label="Cancelled appointments"
               />
             </section>
 
             {/* daily stats */}
-            <section className="col-span-4 bg-gradient-to-br from-[#D9D9D9] to-[#737373] rounded-xl p-4">
-              
+            <section className="col-span-4 bg-gradient-to-br from-[#D9D9D9] to-[#737373] rounded-xl">
+              <DailyAnalytics />
             </section>
             
           </div>
         </div>
 
-        
-
         {/* appointments */}
-        <div className="col-span-6 row-span-3 bg-gradient-to-br from-[#D9D9D9] to-[#737373] rounded-xl m-4 p-4">
+        <div className="col-span-6 row-span-3 bg-gradient-to-br from-[#D9D9D9] to-[#737373] rounded-xl m-4 p-4 overflow-y-auto max-h-[500px]">
           
           <AdminAppointmentsTable />
 
