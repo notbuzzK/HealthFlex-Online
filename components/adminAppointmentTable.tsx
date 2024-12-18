@@ -10,6 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import AppointmentModal from './AppointmentModal';
+import UserInfoModal from "./UserInfoModal";
 
 const AdminAppointmentsTable = () => {
   const [appointments, setAppointments] = useState([]);
@@ -57,7 +58,7 @@ const AdminAppointmentsTable = () => {
       <TableBody>
         {appointments.map((appointment, index) => (
           <TableRow key={index}>
-            <TableCell>{appointment.fullName}</TableCell>
+            <TableCell><UserInfoModal fullName={appointment.fullName} /></TableCell>
             <TableCell className={`${getStatusColor(appointment.status)} py-4 px-2 capitalize font-bold text-center rounded`}>{appointment.status}</TableCell>
             <TableCell>
               {new Date(appointment.dateTime).toLocaleString('en-US', {

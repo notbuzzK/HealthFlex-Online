@@ -47,7 +47,7 @@ export default function LoginForm() {
   }
 
   const goToSignUp = () => {
-    router.push("/sign-up"); // Navigate to the sign-up page
+    router.push("/src/sign-up");
   };
 
   return (

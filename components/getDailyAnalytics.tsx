@@ -23,7 +23,7 @@ const DailyAnalytics = () => {
   }, []);
 
   if (isLoading) {
-    return <p>Loading daily analytics...</p>;
+    return <p className="p-5">Loading daily analytics...</p>;
   }
 
   return (

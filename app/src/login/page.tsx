@@ -5,6 +5,9 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import sticker from '/assets/images/Sticker.jpg';
+import AdminPassKey from '@/components/AdminPassKey';
+
+
 
 
 export default function Home() {
@@ -20,9 +23,8 @@ export default function Home() {
               <p className='justify-items-end text-dark-600 xl:text-left'>
                 ©HealthFlex
               </p>
-              <Link href="/src/admin" className="text-green-500">
-                Admin
-              </Link>
+            <AdminPassKey />
+
             </div>
           </div>
         </section>

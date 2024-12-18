@@ -37,11 +37,11 @@ export default function AppointmentModal({ appointment, onUpdate }) {
   };
 
   return (
-    <Dialog>
+    <Dialog modal={false}>
       <DialogTrigger asChild>
         <Button className="rounded-2xl bg-[#E2C044]">Schedule</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-gradient-to-br from-[#D9D9D9] to-[#737373] !rounded-2xl">
+      <DialogContent className="sm:max-w-[425px] bg-gradient-to-br from-[#D9D9D9] to-[#737373] !rounded-2xl" >
         <DialogHeader>
           <DialogTitle>Edit Appointment</DialogTitle>
           <DialogDescription>Update the details of the appointment.</DialogDescription>
@@ -64,12 +64,12 @@ export default function AppointmentModal({ appointment, onUpdate }) {
           {/* DateTime Field */}
           <div>
             <label className="block text-md font-medium">Date and Time</label>
-            <Input
-              type="datetime-local"
-              value={dateTime}
-              onChange={(e) => setDateTime(e.target.value)}
-              className="bg-gradient-to-r from-[#253369] to-[#061133] !text-white rounded"
-            />
+            <SmartDatetimeInput
+        value={dateTime}
+        onValueChange={setDateTime}
+        placeholder="e.g. Tomorrow morning 9am"
+        className="resize-none rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
+      />
           </div>
           {/* Reason Field */}
           <div>

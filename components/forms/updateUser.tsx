@@ -53,7 +53,7 @@ export default function UpdateUser() {
   const form = useForm < z.infer < typeof formSchema >> ({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      
+      medicalConcerns: ['None'],
     },
   })
 
@@ -78,7 +78,6 @@ export default function UpdateUser() {
       });
 
       updateUserDocument(user.email, updatedValues);
-      console.log(updatedValues.password, updatedValues.currentPassword);
       toast.success("User information updated successfully!");
     } catch (error) {
       console.error("Error updating user information:", error);
@@ -143,7 +142,7 @@ export default function UpdateUser() {
                   {...field}
                 />
               </FormControl>
-              <FormDescription className="text-[#fa4147]">ONLY fill in if you want to change your password</FormDescription>
+              <FormDescription className="text-[#FF4F4E]">ONLY fill in if you want to change your password</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -249,10 +248,26 @@ export default function UpdateUser() {
                         <MultiSelectorInput placeholder="Select Medical Concerns"/>
                       </MultiSelectorTrigger>
                       <MultiSelectorContent>
-                      <MultiSelectorList>
-                        <MultiSelectorItem value={"React"}>React</MultiSelectorItem>
-                        <MultiSelectorItem value={"Vue"}>Vue</MultiSelectorItem>
-                        <MultiSelectorItem value={"Svelte"}>Svelte</MultiSelectorItem>
+                      <MultiSelectorList className="rounded bg-slate-300 text-black">
+                        <MultiSelectorItem value={"None"}>None</MultiSelectorItem>
+                        <MultiSelectorItem value={"Allergies"}>Allergies</MultiSelectorItem>
+                        <MultiSelectorItem value={"Asthma"}>Asthma</MultiSelectorItem>
+                        <MultiSelectorItem value={"Diabetes"}>Diabetes</MultiSelectorItem>
+                        <MultiSelectorItem value={"Hypertension"}>Hypertension</MultiSelectorItem>
+                        <MultiSelectorItem value={"Heart Disease"}>Heart Disease</MultiSelectorItem>
+                        <MultiSelectorItem value={"Stroke"}>Stroke</MultiSelectorItem>
+                        <MultiSelectorItem value={"Chronic Pain"}>Chronic Pain</MultiSelectorItem>
+                        <MultiSelectorItem value={"Cancer"}>Cancer</MultiSelectorItem>
+                        <MultiSelectorItem value={"Thyroid Disorders"}>Thyroid Disorders</MultiSelectorItem>
+                        <MultiSelectorItem value={"Autoimmune Diseases"}>Autoimmune Diseases</MultiSelectorItem>
+                        <MultiSelectorItem value={"Kidney Disease"}>Kidney Disease</MultiSelectorItem>
+                        <MultiSelectorItem value={"Liver Disease"}>Liver Disease</MultiSelectorItem>
+                        <MultiSelectorItem value={"Blood Disorders"}>Blood Disorders</MultiSelectorItem>
+                        <MultiSelectorItem value={"Seizure Disorders"}>Seizure Disorders</MultiSelectorItem>
+                        <MultiSelectorItem value={"High Cholesterol"}>High Cholesterol</MultiSelectorItem>
+                        <MultiSelectorItem value={"HIV/AIDS"}>HIV/AIDS</MultiSelectorItem>
+                        <MultiSelectorItem value={"Hepatitis"}>Hepatitis</MultiSelectorItem>
+                        <MultiSelectorItem value={"Mental Health Conditions"}>Mental Health Conditions</MultiSelectorItem>
                       </MultiSelectorList>
                       </MultiSelectorContent>
                     </MultiSelector>

@@ -328,8 +328,8 @@ const TimePicker = () => {
   }, []);
 
   return (
-    <div className="space-y-2 pr-3 py-3 relative ">
-      <h3 className="text-sm font-medium ">Time</h3>
+    <div className="space-y-2 pl-3 py-3 relative ">
+      <h3 className="text-sm font-medium text-center ">Time</h3>
       <ScrollArea
         onKeyDown={handleKeydown}
         className="h-[90%] w-full focus-visible:outline-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0 py-0.5 rounded"
@@ -379,7 +379,7 @@ const TimePicker = () => {
                           ? "default"
                           : "outline",
                     }),
-                    "h-8 px-3 w-full text-sm focus-visible:outline-0 outline-0 focus-visible:border-0 cursor-default ring-0 rounded bg-slate-300 focus:bg-[#E2C044]",
+                    "h-8 px-3 w-full text-sm focus:outline-0 outline-0 focus:border-0 cursor-default ring-0 rounded bg-slate-300 focus:bg-[#E2C044]",
                   )}
                   onClick={() => handleClick(i, part, PM_AM, trueIndex)}
                   onFocus={() => isSuggested && setActiveIndex(trueIndex)}
@@ -532,6 +532,7 @@ const DateTimeLocalInput = ({
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0 bg-gray-300 rounded" sideOffset={8}>
         <div className="flex gap-1">
+          <TimePicker />
           <Calendar
             {...props}
             id={"calendar"}
@@ -541,7 +542,6 @@ const DateTimeLocalInput = ({
             onSelect={formateSelectedDate}
             initialFocus
           />
-          <TimePicker />
         </div>
       </PopoverContent>
     </Popover>

@@ -1,5 +1,8 @@
-import { account } from "./appwrite.config";
 
-const result = await account.get();
+const values = '12345678'
 
-console.log(result);
+const placeholder = '+'
+const enteredValue = values
+const passkey = `${placeholder}${enteredValue}`
+
+console.log(passkey);

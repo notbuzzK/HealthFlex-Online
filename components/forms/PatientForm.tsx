@@ -28,17 +28,27 @@ import { account, databases } from "@/lib/appwrite.config";
 import { registerUser } from "@/lib/actions/patient.actions"; // Import the utility function
 import * as sdk from "node-appwrite";
 import { useState, useEffect } from 'react';
+import { useRouter } from "next/navigation"
 const items = [
-  { id: "ph1", label: "ph1" },
-  { id: "ph2", label: "ph2" },
-  { id: "ph3", label: "ph3" },
-  { id: "ph4", label: "ph4" },
-  { id: "ph5", label: "ph5" },
-  { id: "ph6", label: "ph6" },
-  { id: "ph7", label: "ph7" },
-  { id: "ph8", label: "ph8" },
-  { id: "ph9", label: "ph9" },
-  { id: "ph10",label: "ph10" },
+  { id: "None", label: "None" },
+  { id: "Allergies", label: "Allergies" },
+  { id: "Asthma", label: "Asthma" },
+  { id: "Diabetes", label: "Diabetes" },
+  { id: "Hypertension", label: "Hypertension" },
+  { id: "Heart Disease", label: "Heart Disease" },
+  { id: "Stroke", label: "Stroke" },
+  { id: "Chronic Pain", label: "Chronic Pain" },
+  { id: "Cancer", label: "Cancer" },
+  { id: "Thyroid Disorders", label: "Thyroid Disorders" },
+  { id: "Autoimmune Diseases",label: "Autoimmune Diseases" },
+  { id: "Kidney Disease",label: "Kidney Disease" },
+  { id: "Liver Disease",label: "Liver Disease" },
+  { id: "Blood Disorders",label: "Blood Disorders" },
+  { id: "Seizure Disorders",label: "Seizure Disorders" },
+  { id: "High Cholesterol",label: "High Cholesterol" },
+  { id: "HIV/AIDS",label: "HIV/AIDS" },
+  { id: "Hepatitis",label: "Hepatitis" },
+  { id: "Mental Health Conditions",label: "Mental Health Conditions" },
 ] as const
 
 const formSchema = z.object({
@@ -57,10 +67,11 @@ const formSchema = z.object({
 
 
 export default function PatientForm() {
+  const router = useRouter();
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
   useEffect(() => {
-    setSelectedItems(["ph1"]); // Set the default value of selected items
+    setSelectedItems(["None"]); // Set the default value of selected items
   }, []);
   
 
@@ -74,7 +85,7 @@ export default function PatientForm() {
       dateOfBirth: "",
       contactNo: "",
       sex: "",
-      items: ["ph1"],
+      items: ["None"],
     },
   });
   
@@ -313,8 +324,8 @@ export default function PatientForm() {
           </div>
 
         </div>
-
         <Button type="submit" className="w-full p-2 rounded bg-[#E2C044] border border-gray-400">Submit</Button>
+        <Button type="button" className="bg-[#FF4F4E] text-white rounded w-full" onClick={() => router.push("/src/login")}>Cancel</Button>
       </form>
     </Form>
   )

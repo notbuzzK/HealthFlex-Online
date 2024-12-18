@@ -45,8 +45,8 @@ const UserAppointmentsTable = () => {
         <TableRow>
           <TableHead className='text-center'>Status</TableHead>
           <TableHead>Appointment</TableHead>
-          <TableHead>Service</TableHead>
-          <TableHead>Reason</TableHead>
+          <TableHead className='w-[300px]'>Service</TableHead>
+          <TableHead>Note from Staff</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>

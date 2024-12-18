@@ -81,7 +81,7 @@ export default function UserTools() {
       </div>
       <div className="flex justify-between items-center">
         <p className="py-4">Logout</p>
-        <Button className="bg-[#E2C044] rounded-xl" onClick={handleLogout}>
+        <Button className="bg-[#FF4F4E] rounded-xl" onClick={handleLogout}>
           Logout
         </Button>
       </div>

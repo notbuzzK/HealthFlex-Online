@@ -5,6 +5,7 @@ import { StatCard } from "@/components/StatCard";
 import { useState, useEffect } from 'react';
 import { getAllAppointments } from '@/lib/actions/admin.actions';
 import DailyAnalytics from "@/components/getDailyAnalytics";
+import AdminTools from "@/components/AdminTools";
 
 export default function Admin() {
 
@@ -37,7 +38,10 @@ export default function Admin() {
 
         {/* appointment stats */}
         <div className="col-span-6">
-          <p className="text-4xl font-bold my-3 text-white">Hi there, Admin</p>
+          <div className="flex justify-between items-center m-4">
+            <p className="text-4xl font-bold my-3 text-white">Hi there, Admin</p>
+            <AdminTools />
+          </div>
           <div className="grid grid-cols-10 gap-4 m-4 row-span-1">
             {/* sceduled appointments */}
             <section className="col-span-2">
