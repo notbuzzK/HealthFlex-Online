@@ -6,35 +6,29 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { getUserInfo, getFilesForAdmin } from "@/lib/actions/admin.actions"; // Correct imports
+import { getUserInfo } from "@/lib/actions/admin.actions";
 import { useState, useEffect } from "react";
 
 export default function UserInfoModal({ fullName }: { fullName: string }) {
-  
   const [userInfo, setUserInfo] = useState<any>(null);
-  const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<any[]>([]); // State for uploaded files
   const [error, setError] = useState<string | null>(null);
 
   // Fetch user info
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchUserInfo = async () => {
       try {
-        // Fetch user info to get userId
-        const user = await getUserInfo(fullName);
-        setUserInfo(user);
-
-        // Fetch uploaded files for this user
-        const files = await getFilesForAdmin(fullName);
-        setUploadedFiles(files);
+        const data = await getUserInfo(fullName);
+        setUserInfo(data);
       } catch (err) {
-        console.error("Error fetching user data or files:", err);
-        setError("Failed to load user data or files.");
+        console.error("Error fetching user info:", err);
+        setError("Failed to load user info.");
       }
     };
 
-    fetchUserData();
+    fetchUserInfo();
   }, [fullName]);
-  
+
   if (error) {
     return <p>{error}</p>;
   }
@@ -42,8 +36,6 @@ export default function UserInfoModal({ fullName }: { fullName: string }) {
   if (!userInfo) {
     return <p>Loading user info...</p>;
   }
-
-  
 
   return (
     <div>
@@ -82,44 +74,8 @@ export default function UserInfoModal({ fullName }: { fullName: string }) {
                 <p className="text-right">{userInfo.medicalConcerns.join(", ")}</p>
               </div>
             </div>
-            <div>
-              <div>
-                <DialogTitle>Uploaded Files</DialogTitle>
-                {error && <p className="text-red-500">{error}</p>}
-                  {uploadedFiles.length > 0 ? (
-                    <ul className="space-y-4">
-                      {uploadedFiles.map((file) => (
-                        <li key={file.fileId} className="flex items-center justify-between border p-2 rounded">
-                          <p className="text-sm">{file.name}</p>
-                          <div className="space-x-2">
-                            {/* View file */}
-                            <a
-                              href={file.viewUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-blue-500 underline"
-                            >
-                              View
-                            </a>
-                            {/* Download file */}
-                            <a
-                              href={file.viewUrl}
-                              download={file.name}
-                              className="text-blue-500 underline"
-                            >
-                              Download
-                            </a>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p>No files uploaded.</p>
-                )}
-              </div>
-            </div>
+
           </DialogHeader>
-        <DialogDescription></DialogDescription>
         </DialogContent>
       </Dialog>
     </div>

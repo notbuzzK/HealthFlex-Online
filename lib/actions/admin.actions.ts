@@ -156,6 +156,7 @@ export async function getUserInfo(fullName: string) {
   return userDocument.documents[0];
 }
 
+/*
 export async function getFilesForAdmin(fullName: string) {
   try {
     const userFiles = await databases.listDocuments(
@@ -178,5 +179,70 @@ export async function getFilesForAdmin(fullName: string) {
   } catch (error) {
     console.error("Error fetching files for user:", error);
     throw new Error("Failed to fetch files for the user.");
+  }
+}
+*/
+
+export async function verifyAdmin() {
+  const router = useRouter();
+  try {
+    // Check if the user is logged in
+    const user = await account.get();
+
+    if (!user) {
+      // User is not logged in, redirect to login page
+      toast("No users logged in.");
+      router.push("/src/login");
+      return { success: false };
+    }
+
+    // Check if the user is an admin
+    if (user.email === "admin@gmail.com") {
+      // User is an admin, return success
+      return { success: true };
+    } else {
+      // User is not an admin, redirect to user dashboard
+      toast.error("User does not have admin access");
+      router.push("/src/user-dash");
+      return { success: false };
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
+let errorShown = false;
+
+export async function checkAdminAccess(router) {
+  try {
+    const user = await account.get();
+
+    if (!user) {
+      if (!errorShown) {
+        toast.error("Please login using admin passkey first.");
+        errorShown = true;
+      }
+      router.push("/src/login");
+      return false;
+    }
+
+    if (user.email !== "admin@gmail.com") {
+      if (!errorShown) {
+        toast.error("User does not have admin access.");
+        errorShown = true;
+      }
+      router.push("/src/user-dash");
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Error verifying admin access:", error);
+    if (!errorShown) {
+      toast.error("Failed to verify admin access.");
+      errorShown = true;
+    }
+    router.push("/src/login");
+    return false;
   }
 }

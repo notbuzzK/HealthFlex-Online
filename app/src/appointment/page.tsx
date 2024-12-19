@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { toast } from "sonner"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -34,7 +34,7 @@ import { Calendar } from "@/components/ui/calendar"
 import { Calendar as CalendarIcon } from "lucide-react"
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
-import { makeAppointment } from "@/lib/actions/patient.actions"
+import { checkUserAccess, makeAppointment } from "@/lib/actions/patient.actions"
 import { SmartDatetimeInput } from "@/components/extension/smart-date-time-input"
 import { account } from "@/lib/appwrite.config"
 import moment from "moment"
@@ -57,7 +57,15 @@ const formSchema = z.object({
 
 export default function MyForm() {
   const router = useRouter();
-  //onst user = account.get();
+
+  useEffect(() => {
+    const verifyAccess = async () => {
+      const hasAccess = await checkUserAccess(router);
+      if (!hasAccess) return;
+    };
+
+    verifyAccess();
+  }, [router]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -66,6 +74,7 @@ export default function MyForm() {
       notes: ""
     },
   });
+
 
   type AppointmentStatus = "pending" | "approved" | "declined";
   async function onSubmit(values: z.infer<typeof formSchema>) {

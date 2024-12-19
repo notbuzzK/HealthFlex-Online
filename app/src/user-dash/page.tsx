@@ -3,14 +3,22 @@
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import UserAppointmentsTable from "@/components/userAppointmentTable";
-import { use } from "react";
+import { use, useEffect } from "react";
 import UserInfo from "@/components/userInfo";
 import UserTools from "@/components/ui/userTools";
-
-
+import { checkUserAccess } from "@/lib/actions/patient.actions";
 
 export default function SignUp() {
   const router = useRouter();
+
+  useEffect(() => {
+    const verifyAccess = async () => {
+      const hasAccess = await checkUserAccess(router);
+      if (!hasAccess) return;
+    };
+
+    verifyAccess();
+  }, [router]);
 
   const handleMakeAppointment = () => {
     // Navigate to the 'appointment' page inside the 'user-dash' folder

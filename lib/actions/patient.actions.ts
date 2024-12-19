@@ -45,6 +45,7 @@ export async function registerUser({
   contactNo,
   sex,
   items,
+  passkey,
 }: {
   email: string;
   password: string;
@@ -54,6 +55,7 @@ export async function registerUser({
   contactNo: string;
   sex: string;
   items: string[];
+  passkey: string;
 }) {
   try {
     // Create user in Appwrite authentication system
@@ -78,6 +80,7 @@ export async function registerUser({
         medicalConcerns: items,
         sex,
         password,
+        passkey
       },
       [
         sdk.Permission.read("users"),
@@ -271,4 +274,29 @@ export async function uploadFile(fullName, file) {
   }
 
   return fileId;
+}
+
+let errorShown = false;
+
+export async function checkUserAccess(router: ReturnType<typeof useRouter>) {
+  try {
+    const user = await account.get();
+    if (!user) {
+      if (!errorShown) {
+        toast.error("Please login first.");
+        errorShown = true;
+      }
+      router.push("/src/login");
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error("Error verifying user access:", error);
+    if (!errorShown) {
+      toast.error("Failed to verify user access.");
+      errorShown = true;
+    }
+    router.push("/src/login");
+    return false;
+  }
 }

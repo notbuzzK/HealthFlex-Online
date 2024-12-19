@@ -24,7 +24,7 @@ export const databases = new sdk.Databases(serverClient);
 export const storage = new sdk.Storage(serverClient);
 export const functions = new sdk.Functions(serverClient);
 
-const client = new AppwriteClient();
+export const client = new AppwriteClient();
 client.setEndpoint('https://cloud.appwrite.io/v1').setProject(PROJECT_ID);
 
 export const account = new Account(client);

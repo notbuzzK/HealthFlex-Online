@@ -50,7 +50,7 @@ const AdminAppointmentsTable = () => {
           <TableHead className="text-center font-bold">Status</TableHead>
           <TableHead className="w-[175px] font-bold">Date and Time</TableHead>
           <TableHead className="font-bold">Service</TableHead>
-          <TableHead className="font-bold">Notes</TableHead>
+          <TableHead className="font-bold">Note from Patient</TableHead>
           <TableHead className="font-bold">Reason</TableHead>
           <TableHead className="text-center font-bold ">Actions</TableHead>
         </TableRow>
@@ -58,7 +58,7 @@ const AdminAppointmentsTable = () => {
       <TableBody>
         {appointments.map((appointment, index) => (
           <TableRow key={index}>
-            <TableCell><UserInfoModal fullName={appointment.fullName} /></TableCell>
+            <TableCell className="underline"><UserInfoModal fullName={appointment.fullName} /></TableCell>
             <TableCell className={`${getStatusColor(appointment.status)} py-4 px-2 capitalize font-bold text-center rounded`}>{appointment.status}</TableCell>
             <TableCell>
               {new Date(appointment.dateTime).toLocaleString('en-US', {

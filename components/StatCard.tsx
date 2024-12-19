@@ -1,6 +1,11 @@
 import { IoWarning } from "react-icons/io5";
 import { TbCalendarCheck } from "react-icons/tb";
 import { BsHourglass } from "react-icons/bs";
+import { verifyAdmin } from "@/lib/actions/admin.actions";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { checkAdminAccess } from "@/lib/actions/admin.actions";
+
 
 type StatCardProps = {
   type: "appointments" | "pending" | "cancelled";
@@ -9,6 +14,17 @@ type StatCardProps = {
 };
 
 export const StatCard = ({ count = 0, label, type }: StatCardProps) => {
+  const router = useRouter();
+
+  useEffect(() => {
+    const verifyAccess = async () => {
+      const hasAccess = await checkAdminAccess(router);
+      if (!hasAccess) return;
+    };
+
+    verifyAccess();
+  }, [router]);
+
   let icon;
 
   switch (type) {
