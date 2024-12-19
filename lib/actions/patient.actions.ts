@@ -1,6 +1,6 @@
 "use client"
 
-import { account, databases } from "@/lib/appwrite.config";
+import { account, databases, storage } from "@/lib/appwrite.config";
 import * as sdk from "node-appwrite";
 import { Query } from "appwrite";
 import { toast } from "sonner";
@@ -9,6 +9,8 @@ import { useRouter } from "next/navigation";
 const DATABASE_ID = '6720cc9c000049efcd3c';
 const PATIENT_COLLECTION_ID = '6720ccbd0028468dee7e';
 const APPOINTMENT_COLLECTION_ID = '6720d51d0006e3cf342e';
+const FILES_COLLECTION_ID = '6762e8190003407359d5';
+const BUCKET_ID = '6720dbd4000ebb15270b';
 
 export async function loginUser({
   email,
@@ -224,4 +226,49 @@ export async function updateUserDocument(email: string, data: any) {
     console.error("Error updating user document:", error);
     throw error;
   }
+}
+
+export async function uploadFile(fullName, file) {
+  const uploadedFile = await storage.createFile(
+    BUCKET_ID,
+    "unique()",
+    file
+  );
+
+  const fileId = uploadedFile.$id;
+
+  // get user document from collection
+  const existingUserDoc = await databases.listDocuments(
+    DATABASE_ID,
+    FILES_COLLECTION_ID,
+    [Query.equal("fullName", fullName)]
+  );
+
+  if (existingUserDoc.total > 0) {
+    // append fileIds if user document exists
+    const userDoc = existingUserDoc.documents[0];
+    const updatedFiles = [...userDoc.fileId, fileId];
+
+    await databases.updateDocument(
+      DATABASE_ID,
+      FILES_COLLECTION_ID,
+      userDoc.$id,
+      {
+        fileId: updatedFiles,
+      }
+    );
+  } else {
+    // if no document exists, create a new one
+    await databases.createDocument(
+      DATABASE_ID,
+      FILES_COLLECTION_ID,
+      "unique()",
+      {
+        fullName,
+        fileId: [fileId], 
+      }
+    );
+  }
+
+  return fileId;
 }

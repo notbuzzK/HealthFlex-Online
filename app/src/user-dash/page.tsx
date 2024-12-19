@@ -19,7 +19,7 @@ export default function SignUp() {
 
   return (
     <div className="bg-gradient-to-br remove-scrollbar from-[#253369] to-[#061133] text-black">
-      <section className="container min-h-screen remove-scrollbar grid md:grid-cols-7 md:grid-rows-6 gap-4">
+      <section className="container min-h-screen remove-scrollbar grid lg:grid-cols-7 lg:grid-rows-4 gap-4">
 
         {/* Make Appointment */}
         <div className="bg-gradient-to-br from-[#D9D9D9] to-[#737373] drop-shadow-xl  md:col-span-3 md:row-span-1 m-4 rounded-3xl">
@@ -38,7 +38,7 @@ export default function SignUp() {
         </div>
 
         {/* Appointments */}
-        <div className="bg-gradient-to-br from-[#D9D9D9] to-[#737373] drop-shadow-xl  md:col-span-4 md:row-span-6 m-4 rounded-3xl overflow-y-auto md:max-h-[690px]">
+        <div className="bg-gradient-to-br from-[#D9D9D9] to-[#737373] drop-shadow-xl  md:col-span-4 md:row-span-6 m-4 rounded-3xl overflow-y-auto md:max-h-[775px]">
         <div className="p-5">
             <p className="text-4xl font-bold">Appointments</p>
           </div>
@@ -49,7 +49,7 @@ export default function SignUp() {
         </div>
         
         {/* Profile */}
-        <div className="bg-gradient-to-br from-[#D9D9D9] to-[#737373] drop-shadow-xl  md:col-span-3 md:row-span-3 m-4 rounded-3xl overflow-y-auto md:max-h-[500px]">
+        <div className="bg-gradient-to-br from-[#D9D9D9] to-[#737373] drop-shadow-xl  md:col-span-3 md:row-span-3 m-4 rounded-3xl overflow-y-auto md:max-h-[570px]">
           
           <div className="grid grid-rows-2 h-full">
             <section className="p-5 row-span-1">

@@ -5,28 +5,36 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { getUserInfo } from "@/lib/actions/admin.actions"
+} from "@/components/ui/dialog";
+import { getUserInfo, getFilesForAdmin } from "@/lib/actions/admin.actions"; // Correct imports
 import { useState, useEffect } from "react";
 
 export default function UserInfoModal({ fullName }: { fullName: string }) {
+  
   const [userInfo, setUserInfo] = useState<any>(null);
+  const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
 
+  // Fetch user info
   useEffect(() => {
-    const fetchUserInfo = async () => {
+    const fetchUserData = async () => {
       try {
-        const data = await getUserInfo(fullName); // Pass the string directly
-        setUserInfo(data);
+        // Fetch user info to get userId
+        const user = await getUserInfo(fullName);
+        setUserInfo(user);
+
+        // Fetch uploaded files for this user
+        const files = await getFilesForAdmin(fullName);
+        setUploadedFiles(files);
       } catch (err) {
-        console.error("Error fetching user info:", err);
-        setError("Failed to load user info.");
+        console.error("Error fetching user data or files:", err);
+        setError("Failed to load user data or files.");
       }
     };
 
-    fetchUserInfo();
-  }, [fullName]); // Add `fullName` as a dependency to avoid unnecessary re-renders
-
+    fetchUserData();
+  }, [fullName]);
+  
   if (error) {
     return <p>{error}</p>;
   }
@@ -35,11 +43,13 @@ export default function UserInfoModal({ fullName }: { fullName: string }) {
     return <p>Loading user info...</p>;
   }
 
+  
+
   return (
     <div>
       <Dialog>
         <DialogTrigger className="!text-left">{userInfo.fullName}</DialogTrigger>
-        <DialogContent className="sm:max-w-[425px] bg-gradient-to-br from-[#D9D9D9] to-[#737373] !rounded-2xl max-h-[600px] overflow-y-auto">
+        <DialogContent className="sm:max-w-[600px] bg-gradient-to-br from-[#D9D9D9] to-[#737373] !rounded-2xl max-h-[600px] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Patient Info</DialogTitle>
             <div>
@@ -69,13 +79,49 @@ export default function UserInfoModal({ fullName }: { fullName: string }) {
               </div>
               <div className="flex justify-between">
                 <p>Medical Concerns: </p>
-                <p>{userInfo.medicalConcerns.join(", ")}</p>
+                <p className="text-right">{userInfo.medicalConcerns.join(", ")}</p>
+              </div>
+            </div>
+            <div>
+              <div>
+                <DialogTitle>Uploaded Files</DialogTitle>
+                {error && <p className="text-red-500">{error}</p>}
+                  {uploadedFiles.length > 0 ? (
+                    <ul className="space-y-4">
+                      {uploadedFiles.map((file) => (
+                        <li key={file.fileId} className="flex items-center justify-between border p-2 rounded">
+                          <p className="text-sm">{file.name}</p>
+                          <div className="space-x-2">
+                            {/* View file */}
+                            <a
+                              href={file.viewUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-500 underline"
+                            >
+                              View
+                            </a>
+                            {/* Download file */}
+                            <a
+                              href={file.viewUrl}
+                              download={file.name}
+                              className="text-blue-500 underline"
+                            >
+                              Download
+                            </a>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>No files uploaded.</p>
+                )}
               </div>
             </div>
           </DialogHeader>
+        <DialogDescription></DialogDescription>
         </DialogContent>
       </Dialog>
     </div>
   );
 }
-

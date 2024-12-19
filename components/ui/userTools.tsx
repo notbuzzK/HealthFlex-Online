@@ -16,6 +16,8 @@ import {
 } from "@/components/ui/dialog"
 import UpdateUser from "../forms/updateUser";
 import { useRouter } from "next/navigation";
+import { Upload } from "lucide-react";
+import UploadDocReco from "../UploadDocReco";
 
 
 export default function UserTools() {
@@ -30,10 +32,16 @@ export default function UserTools() {
     <div className="">
       
       <div className="flex justify-between items-center">
-        <p className="py-4">Update Information</p>
+        <p className="py-4">Upload Doctor's Recommendation</p>
+        
+        <UploadDocReco />
+
+      </div>
+      <div className="flex justify-between items-center">
+        <p className="">Update Information</p>
         
         <Dialog>
-          <DialogTrigger className="rounded-xl bg-[#E2C044] p-2 hover:bg-transparent duration-100 shadow-lg w-20">Open</DialogTrigger>
+          <DialogTrigger className="rounded-xl bg-[#E2C044]  hover:bg-transparent duration-100 shadow-lg w-20 h-9">Open</DialogTrigger>
           <DialogContent className="sm:max-w-[425px] bg-gradient-to-br from-[#D9D9D9] to-[#737373] !rounded-2xl max-h-[600px] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Update Information</DialogTitle>
@@ -54,7 +62,7 @@ export default function UserTools() {
       <div className="flex justify-between items-center">
         <p className="py-4">Contact Healthflex</p>
         <Popover>
-          <PopoverTrigger className="rounded-xl bg-[#E2C044] p-2 hover:bg-transparent duration-100 shadow-lg w-20">
+          <PopoverTrigger className="rounded-xl bg-[#E2C044] hover:bg-transparent duration-100 shadow-lg w-20 h-9">
               Contact
             </PopoverTrigger>
           <PopoverContent className="bg-gray-300 rounded-xl mr-16 w-80">

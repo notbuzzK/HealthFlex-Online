@@ -64,7 +64,7 @@ export default function LoginForm() {
               <FormLabel className="text-sm font-bold">Email</FormLabel>
               <FormControl>
                 <Input
-                  className="w-full p-2 border rounded bg-gradient-to-r from-white to-gray-400"
+                  className="w-full p-2 border rounded bg-gradient-to-r from-white to-gray-400 text-black"
                   placeholder="Enter your email here"
                   type="email"
                   {...field}
@@ -83,7 +83,7 @@ export default function LoginForm() {
               <FormLabel className="text-sm font-bold">Password</FormLabel>
               <FormControl>
                 <PasswordInput
-                  className="w-full p-2 border rounded bg-gradient-to-r from-white to-gray-400"
+                  className="w-full p-2 border rounded bg-gradient-to-r from-white to-gray-400 text-black"
                   placeholder="Enter your password"
                   {...field}
                 />

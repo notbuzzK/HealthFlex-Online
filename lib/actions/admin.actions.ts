@@ -1,16 +1,19 @@
 "use client"
 
-import { account, databases } from "@/lib/appwrite.config";
+import { account, databases, storage } from "@/lib/appwrite.config";
 import * as sdk from "node-appwrite";
 import { Query } from "appwrite";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { userLogout } from "./patient.actions";
+import { ImageGravity, ImageFormat } from "appwrite";
 
 const DATABASE_ID = '6720cc9c000049efcd3c';
 const PATIENT_COLLECTION_ID = '6720ccbd0028468dee7e';
 const APPOINTMENT_COLLECTION_ID = '6720d51d0006e3cf342e';
 const ADMIN_COLLECTION_ID = '67628aab0039de9624ee';
+const FILES_COLLECTION_ID = '6762e8190003407359d5';
+const BUCKET_ID = '6720dbd4000ebb15270b';
 
 export async function getAllAppointments() {
   try {
@@ -137,7 +140,6 @@ export async function updatePasskey(values){
 }
 
 export async function getUserInfo(fullName: string) {
-  console.log("Querying fullName:", fullName); // Log the input value
 
   const userDocument = await databases.listDocuments(
     DATABASE_ID,
@@ -152,4 +154,29 @@ export async function getUserInfo(fullName: string) {
   }
 
   return userDocument.documents[0];
+}
+
+export async function getFilesForAdmin(fullName: string) {
+  try {
+    const userFiles = await databases.listDocuments(
+      DATABASE_ID,
+      FILES_COLLECTION_ID,
+      [Query.equal("fullName", fullName)]
+    );
+
+    // If no files are found, return an empty array
+    if (!userFiles.documents || userFiles.documents.length === 0) {
+      return [];
+    }
+
+    // Map over the documents and fetch view URLs
+    return userFiles.documents.map((doc) => ({
+      fileId: doc.fileId,
+      name: doc.name || `File-${doc.fileId}`, // Optional file name
+      viewUrl: storage.getFileView(BUCKET_ID, doc.fileId), // Direct view/download URL
+    }));
+  } catch (error) {
+    console.error("Error fetching files for user:", error);
+    throw new Error("Failed to fetch files for the user.");
+  }
 }
