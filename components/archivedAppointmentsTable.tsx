@@ -9,10 +9,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import AppointmentModal from './AppointmentModal';
 import UserInfoModal from "./UserInfoModal";
 
-const AdminAppointmentsTable = () => {
+const ArchivedAppointmentsTable = () => {
   const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
@@ -43,7 +42,7 @@ const AdminAppointmentsTable = () => {
 
   return (
     <Table>
-      <TableCaption>A list of recent appointments.</TableCaption>
+      <TableCaption>End of archived appoinments</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className="font-bold">Patient</TableHead>
@@ -52,7 +51,6 @@ const AdminAppointmentsTable = () => {
           <TableHead className="font-bold">Service</TableHead>
           <TableHead className="font-bold">Note from Patient</TableHead>
           <TableHead className="font-bold">Reason</TableHead>
-          <TableHead className="text-center font-bold ">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -61,31 +59,17 @@ const AdminAppointmentsTable = () => {
             const appointmentDate = new Date(appointment.dateTime);
             const today = new Date();
 
-            // Start and end of today
+            // Start of today (midnight)
             const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
-            const endOfDay = startOfDay + 86400000 - 1;
 
-            // Include appointments from today (regardless of time) and future
-            return appointmentDate.getTime() >= startOfDay;
+            // Include appointments from the past (kahapon and earlier)
+            return appointmentDate.getTime() < startOfDay;
           })
-          .sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime))
+          .sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime))
           .map((appointment, index) => (
-            <TableRow
-              key={index}
-              className={
-                new Date(appointment.dateTime).toDateString() === new Date().toDateString()
-                  ? "bg-blue-100" // Highlight for today's appointments
-                  : ""
-              }
-            >
-              <TableCell className="underline">
-                <UserInfoModal fullName={appointment.fullName} />
-              </TableCell>
-              <TableCell
-                className={`${getStatusColor(appointment.status)} py-4 px-2 capitalize font-bold text-center rounded`}
-              >
-                {appointment.status}
-              </TableCell>
+            <TableRow key={index}>
+              <TableCell className="underline"><UserInfoModal fullName={appointment.fullName} /></TableCell>
+              <TableCell className={`${getStatusColor(appointment.status)} py-4 px-2 capitalize font-bold text-center rounded`}>{appointment.status}</TableCell>
               <TableCell>
                 {new Date(appointment.dateTime).toLocaleString('en-US', {
                   year: 'numeric',
@@ -101,19 +85,11 @@ const AdminAppointmentsTable = () => {
               </TableCell>
               <TableCell>{appointment.note}</TableCell>
               <TableCell>{appointment.reason}</TableCell>
-              <TableCell className="text-right">
-                <AppointmentModal
-                  appointment={appointment}
-                  onUpdate={refreshAppointments} // Refresh table on update
-                />
-              </TableCell>
             </TableRow>
           ))}
-
-
       </TableBody>
     </Table>
   );
 };
 
-export default AdminAppointmentsTable;
+export default ArchivedAppointmentsTable;

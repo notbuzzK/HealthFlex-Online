@@ -46,7 +46,7 @@ export default function SignUp() {
         </div>
 
         {/* Appointments */}
-        <div className="bg-gradient-to-br from-[#D9D9D9] to-[#737373] drop-shadow-xl  md:col-span-4 md:row-span-6 m-4 rounded-3xl overflow-y-auto md:max-h-[775px]">
+        <div className="bg-gradient-to-br from-[#D9D9D9] to-[#737373] drop-shadow-xl  md:col-span-4 md:row-span-6 m-4 rounded-3xl overflow-y-auto md:max-h-[775px] remove-scrollbar">
         <div className="p-5">
             <p className="text-4xl font-bold">Appointments</p>
           </div>

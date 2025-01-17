@@ -23,16 +23,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={ cn('min-h-screen b-dark-300 font-sans antialiased', fontSans.variable) }>{children}
-      <Toaster position="top-right" /> {/* Place it in your app's layout */}
-      {children}
-
-      <SearchProvider> 
-        {children}
-      </SearchProvider>
+      <body
+        className={cn(
+          "min-h-screen b-dark-300 font-sans antialiased",
+          fontSans.variable
+        )}
+      >
+        <SearchProvider>
+          <Toaster position="top-right" />
+          {children}
+        </SearchProvider>
       </body>
     </html>
-    
   );
 }
 

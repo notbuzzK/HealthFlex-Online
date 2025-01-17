@@ -5,6 +5,7 @@ import React, { useState, useCallback, useEffect, useRef, useContext } from 'rea
 import Image from 'next/image';
 import Logo from "/assets/images/HealthFlexLogo.png";
 import newLogo from "/assets/images/WhiteHealthFlexLogo.png";
+import Owner from "/assets/images/Owner.png";
 import { SearchContext, useSearch } from "./search-context";
 import { services } from "./services";
 import { useRouter } from "next/navigation";
@@ -19,12 +20,26 @@ interface Service {
 }
 
 export default function Home() {
-
   const router = useRouter();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [hovered, setHovered] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef(null);
+  const [color, setColor] = useState(false)
+  const resultsSectionRef = useRef<HTMLDivElement>(null); // Reference sa results section
+  const { searchTerm,setSearchTerm } = useSearch();
+  console.log("Search Term from Context:", searchTerm);
+  console.log("setSearchTerm from Context:", setSearchTerm);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
+  const [filteredServices, setFilteredServices] = useState(services);
+  const [expandedItem, setExpandedItem] = useState<Service | null>(null);
+  const [isItemOpen, setIsItemOpen] = useState(false);
+  const itemRef = useRef(null);
+  const filters: string[] = ["All", "Lab Test", "Package", "Consultation"];
 
   const goToLogin = () => {
     router.push("src/login"); // Redirect to '/login'
-    console.log("Going to login...");
   };
 
   const goToSignup = () => {
@@ -33,14 +48,11 @@ export default function Home() {
 
   const goToUserDash = () => {
     router.push("src/user-dash"); // Redirect to '/login'
-    console.log("Going to login...");
   };
 
   const goToAppointment = () => {
     router.push("src/appointment"); // Redirect to '/login'
   };
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const checkSession = async () => {
@@ -53,13 +65,6 @@ export default function Home() {
     };
     checkSession();
   }, []);
-
-
-  // Navbar
-  const [hovered, setHovered] = useState(null);
-
-  const [isOpen, setIsOpen] = useState(false);
-  const menuRef = useRef(null);
 
   // Close menu if clicked outside
   useEffect(() => {
@@ -85,7 +90,6 @@ export default function Home() {
     }
   };
 
-  const [color, setColor] = useState(false)
   const changeColor = () => {
     if (window.scrollY >= 550) {
       setColor(true)
@@ -96,34 +100,16 @@ export default function Home() {
 
   window.addEventListener('scroll', changeColor)
 
-  
-  // Header
-  const resultsSectionRef = useRef<HTMLDivElement>(null); // Reference sa results section
-  const { setSearchTerm } = useSearch();
-
   const handleSearch = () => {
+    
     if (resultsSectionRef.current) {
       resultsSectionRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
-  const { searchTerm } = useContext(SearchContext);
-
-  //About
-  const [isExpanded, setIsExpanded] = useState(false);
-
   const handleReadMore = () => {
     setIsExpanded(!isExpanded);
   };
-
-
-  // Services
-  // State Management
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-  const [filteredServices, setFilteredServices] = useState(services);
-
-  // Available Filters
-  const filters: string[] = ["All", "Lab Test", "Package", "Consultation"];
 
   // Handles filter button clicks
   const handleFilterButtonClick = (selectedCategory: string) => {
@@ -139,12 +125,15 @@ export default function Home() {
       filterServices();
   }, [selectedFilters, searchTerm]);
 
+
+  console.log("Search Term:", searchTerm);
   // Filters the services based on the selected category or search term
   const filterServices = () => {
       let tempServices = services;
 
-      // **Step 4**: Apply search filter if searchTerm exists
+      //Apply search filter if searchTerm exists
       if (searchTerm) {
+        console.log("Search Term:", searchTerm);
           tempServices = tempServices.filter((item) =>
               item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
               (item.inclusion && item.inclusion.some((test) =>
@@ -162,12 +151,6 @@ export default function Home() {
 
       setFilteredServices(tempServices);
   };
-  
-  const [expandedItem, setExpandedItem] = useState<Service | null>(null);
-
-
-  const [isItemOpen, setIsItemOpen] = useState(false);
-  const itemRef = useRef(null);
 
   // Close menu if clicked outside
   useEffect(() => {
@@ -186,10 +169,22 @@ export default function Home() {
     };
   }, []);
 
+  const debounce = (func, delay) => {
+    let timeout;
+    return (...args) => {
+      if (timeout) clearTimeout(timeout);
+      timeout = setTimeout(() => func(...args), delay);
+    };
+  };
+  
+  const handleSearchTermChange = debounce((value) => {
+    console.log("Setting Search Term:", value); // I-log bago i-set
+    setSearchTerm(value);
+  }, 300);
+
 
   return (
     <section className="flex flex-col remove-scrollbar">
-
       {/* Navbar */}
       <nav className="Navbar fixed w-screen z-50">
         <div
@@ -372,7 +367,7 @@ export default function Home() {
                 type="text"
                 placeholder="Search Services..."
                 className="mt-4 px-4 py-2 text-black rounded-lg shadow-lg"
-                onChange={(e) => setSearchTerm(e.target.value)} // Update the search term
+                onChange={(e) => handleSearchTermChange(e.target.value)} // Update the search term
               />
               <button
                 className="mt-4 bg-white text-blue-500 px-4 py-2 rounded-full hover:bg-blue-200"
@@ -430,7 +425,7 @@ export default function Home() {
             <div className="flex justify-evenly gap-10 mt-10">
               <div className="flex flex-col items-center">
                 <img
-                  src="./assets/images/Logo.png" // Replace with the correct path
+                  src="./assets/images/Owner.png" // Replace with the correct path
                   alt="Doctor"
                   className="rounded-full max-w-sm object-cover"
                 />
@@ -481,10 +476,9 @@ export default function Home() {
                   placeholder={`Search ${selectedFilters.length === 0 || selectedFilters.includes("All") ? "Services..." : `${selectedFilters[0]}...`}`}
                   className="px-4 py-2 text-black rounded-full shadow-lg mb-2"
                   onChange={(e) => {
-                    setSearchTerm(e.target.value);
+                    handleSearchTermChange(e.target.value);
                     setExpandedItem(null);
-                  }}
-                // Update the search term
+                  }} // Update the search term
                 />
               </div>
               <div className="flex flex-row lg:flex-col">
@@ -509,7 +503,7 @@ export default function Home() {
                     placeholder={`Search ${selectedFilters.length === 0 || selectedFilters.includes("All") ? "Services..." : `${selectedFilters[0]}...`}`}
                     className="px-4 py-2 text-black rounded-full shadow-lg mb-2 w-40"
                     onChange={(e) => {
-                      setSearchTerm(e.target.value);
+                      handleSearchTermChange(e.target.value);
                       setExpandedItem(null);
                     }}
                   // Update the search term

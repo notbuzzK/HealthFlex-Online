@@ -16,7 +16,19 @@ export const services = [
             "Thyroid Function Test",
             "Hepatitis Profile",
             "Liver Profile",
-            "Kidney Profile"
+            "Kidney Profile",
+            "Antigen Swab",
+            "RT-PCR",
+            "X-ray",
+            "Drug Testing",
+            "Pap Smear",
+        ]
+    },
+    {
+        name: "Ultrasound",
+        category: "Lab Test",
+        inclusion: [
+            "Every Friday | 3 pm"
         ]
     },
     {
@@ -273,13 +285,19 @@ export const services = [
         name: "Pediatrician",
         category: "Consultation",
         doctor: "Dr. Frances Kaye Cosico, MD",
-        schedule: "Every Sunday",
+        schedule: "Every Sunday | 10am - 12pm",
     },
     {
-        name: "General Physician",
+        name: "General Physician (Tues)",
         category: "Consultation",
         doctor: "Dr. Florie Dela Cruz",
-        schedule: "Every Monday",
+        schedule: "Every Tuesday | 10 am - 12 pm",
+    },
+    {
+        name: "General Physician (Sun)",
+        category: "Consultation",
+        doctor: "Dr. Florie Dela Cruz",
+        schedule: "Every Sunday | 10 am - 12 pm",
     },
   ];
   
