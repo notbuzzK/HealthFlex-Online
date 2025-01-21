@@ -113,8 +113,8 @@ export default function AdminTools() {
               <div className="w-full">
                 <Button type="submit" className="bg-[#E2C044] rounded-xl w-full">Submit new passkey</Button>
               </div>
-              <div className="flex justify-between pt-5">
-                <p>Logout</p>
+              <div className="flex justify-end pt-5">
+                
                 <Button type="button" className="bg-[#FF4F4E] rounded-xl" onClick={handleLogout}>Logout</Button>
 
               </div>

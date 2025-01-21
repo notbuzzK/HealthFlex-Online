@@ -1,9 +1,13 @@
+"use client";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { userLogout } from "@/lib/actions/patient.actions";
+import { resetPassword, userLogout } from "@/lib/actions/patient.actions";
 import { Button } from "@/components/ui/button";
 import UpdateUserButton from "../forms/updateUser";
 import {
@@ -18,9 +22,32 @@ import UpdateUser from "../forms/updateUser";
 import { useRouter } from "next/navigation";
 import { Upload } from "lucide-react";
 import UploadDocReco from "../UploadDocReco";
+import PasswordReset from "../PasswordRecoveryModal";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
+import * as z from "zod";
+import { Input } from "@/components/ui/input";
+
+const formSchema = z.object({
+  email: z.string().email("Invalid email address"),
+});
 
 
 export default function UserTools() {
+    const form = useForm<z.infer<typeof formSchema>>({
+      resolver: zodResolver(formSchema),
+      defaultValues: { email: "" },
+    });
+  
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+      await resetPassword(values.email);
+    }
 
   const router = useRouter();
 
@@ -38,7 +65,7 @@ export default function UserTools() {
   */
 
   return (
-    <div className="pt-5">
+    <div className="">
       
       
       <div className="flex justify-between items-center">
@@ -61,6 +88,44 @@ export default function UserTools() {
           </DialogContent>
         </Dialog>
 
+      </div>
+
+      <div className="pt-3">
+        <div className="flex justify-between items-center">
+          <p>Reset Password</p>
+          <Dialog>
+            <DialogTrigger  className="rounded-xl bg-[#E2C044]  hover:bg-transparent duration-100 shadow-lg w-20 h-9">Open</DialogTrigger>
+            <DialogContent className="bg-blue-950 !rounded-xl">
+              <DialogHeader>
+                <DialogTitle className="text-white">Password Recovery</DialogTitle>
+                <DialogDescription className="text-white">Enter your email address to reset your password.</DialogDescription>
+                <Form {...form}>
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-8 max-w-3xl w-3/4 mx-auto py-10"
+                  >
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-white">Email Address</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Enter your email" {...field}
+                              className="w-full p-2 border rounded bg-gradient-to-r from-white to-gray-400 text-black" />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <Button type="submit" className="w-full p-2 rounded bg-[#E2C044] border border-gray-400">Submit</Button>
+                  </form>
+                </Form>
+              </DialogHeader>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       <div className="flex justify-between items-center">

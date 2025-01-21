@@ -47,11 +47,6 @@ export default function UserInfo() {
         </div>
 
         <div className="flex justify-between">
-          <p>Password: </p>
-          <p>{userInfo.password}</p>
-        </div>
-
-        <div className="flex justify-between">
           <p>Contact Number: </p>
           <p>{userInfo.number}</p>
         </div>

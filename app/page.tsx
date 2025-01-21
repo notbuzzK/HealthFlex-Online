@@ -297,7 +297,7 @@ export default function Home() {
         {isOpen && (
           <div 
             ref={menuRef}
-            className="lg:hidden bg-white shadow-md rounded-xl w-1/4 flex flex-col items-center p-4 space-y-2 bg-opacity-80 absolute right-0 w-[130px]">
+            className="lg:hidden bg-white shadow-md rounded-xl flex flex-col items-center p-4 space-y-2 bg-opacity-80 absolute right-0 w-[130px]">
             {/* Navigation Links */}
             {["Home", "About Us", "Services", "Contact"].map((link, index) => (
               <button

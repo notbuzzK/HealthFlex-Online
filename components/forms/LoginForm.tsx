@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -17,6 +18,7 @@ import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { loginUser } from "@/lib/actions/patient.actions";
+import PasswordReset from "../PasswordRecoveryModal";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -48,6 +50,11 @@ export default function LoginForm() {
 
   const goToSignUp = () => {
     router.push("/src/sign-up");
+  };
+
+  const handlePasswordReset = () => {
+    console.log("Password reset clicked");
+    router.push("/src/password-reset");
   };
 
   return (
@@ -89,9 +96,14 @@ export default function LoginForm() {
                 />
               </FormControl>
               <FormMessage />
+              <FormDescription
+                className="text-xs cursor-pointer">
+                  <PasswordReset />
+              </FormDescription>
             </FormItem>
           )}
         />
+        
 
         <Button type="submit" className="w-full p-2 rounded bg-[#E2C044] border border-gray-400">
           Submit

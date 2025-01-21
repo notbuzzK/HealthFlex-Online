@@ -53,8 +53,11 @@ export default function Admin() {
           <div className="flex justify-between items-center m-4">
             <p className="text-4xl font-bold my-3 text-white">Hi there, Admin</p>
             <div className="flex flex-row">
+              <div className="flex flex-row gap-3">
               <Archive />
               <AdminTools />
+                
+              </div>
             </div>
           </div>
           <div className="grid grid-cols-10 gap-4 m-4 row-span-1">

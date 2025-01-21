@@ -108,47 +108,6 @@ export default function UpdateUser() {
           )}
         />
         
-        
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>New Password</FormLabel>
-              <FormControl>
-                <Input 
-                placeholder="enter new password"
-                className="rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
-                type="text"
-                {...field} />
-              </FormControl>
-              
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="currentPassword"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Current Password</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Enter current password"
-                  className="rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
-                  type="password"
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription className="text-[#FF4F4E]">ONLY fill in if you want to change your password</FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        
         <FormField
           control={form.control}
           name="number"

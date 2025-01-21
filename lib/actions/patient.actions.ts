@@ -230,6 +230,7 @@ export async function updateUserDocument(email: string, data: any) {
     throw error;
   }
 }
+/*
 
 export async function uploadFile(fullName, file) {
   const uploadedFile = await storage.createFile(
@@ -275,6 +276,7 @@ export async function uploadFile(fullName, file) {
 
   return fileId;
 }
+*/
 
 let errorShown = false;
 
@@ -298,5 +300,27 @@ export async function checkUserAccess(router: ReturnType<typeof useRouter>) {
     }
     router.push("/src/login");
     return false;
+  }
+}
+
+export async function resetPassword(email: string) {
+  try {
+    // Ensure the URL matches your Appwrite project setup
+    const recoveryURL = "http://localhost:3000/src/password-reset";
+    await account.createRecovery(email, recoveryURL);
+    toast.success("Please check your email for the password reset link.");
+  } catch (error) {
+    console.error("Error sending password reset email:", error);
+    toast.error("Failed to send password reset email. Please try again.");
+  }
+}
+
+export async function confirmPasswordRecovery(userId: string, secret: string, newPassword: string) {
+  try {
+    await account.updateRecovery(userId, secret, newPassword);
+    toast.success("Password successfully reset!");
+  } catch (error) {
+    console.error("Error resetting password:", error);
+    throw new Error("Failed to reset password.");
   }
 }

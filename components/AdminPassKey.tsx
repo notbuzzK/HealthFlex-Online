@@ -102,8 +102,8 @@ export default function AdminPassKey() {
                   </FormItem>
                 )}
               />
-              <div className="flex justify-end gap-4">
-                <Button type="button" className="bg-[#E2C044] rounded-xl" onClick={handleLogout}>Logout</Button>
+              <div className="flex justify-between gap-4">
+                <Button type="button" className="bg-[#FF4F4E] rounded-xl" onClick={handleLogout}>Logout</Button>
                 <Button type="submit" className="bg-[#E2C044] rounded-xl">Submit</Button>
               </div>
             </form>
