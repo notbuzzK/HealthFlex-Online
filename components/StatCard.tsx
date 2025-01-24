@@ -29,13 +29,13 @@ export const StatCard = ({ count = 0, label, type }: StatCardProps) => {
 
   switch (type) {
     case "appointments":
-      icon = <TbCalendarCheck size={32} color="#56ff61" />;
+      icon = <TbCalendarCheck size={32} color="#23346a" />;
       break;
     case "pending":
-      icon = <BsHourglass size={32} color="#6b26ff" />;
+      icon = <BsHourglass size={32} color="#2d698d" />;
       break;
     case "cancelled":
-      icon = <IoWarning size={32} color="#FF4F4E" />;
+      icon = <IoWarning size={32} color="#292839" />;
       break;
     default:
       icon = null;

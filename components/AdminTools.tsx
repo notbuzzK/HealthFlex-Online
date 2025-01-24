@@ -75,7 +75,7 @@ export default function AdminTools() {
   return (
     <div className="flex flex-col gap-4">
       <Dialog>
-      <DialogTrigger className='text-green-500'>Admin Tools</DialogTrigger>
+      <DialogTrigger className='text-[#bae8e8]'>Admin Tools</DialogTrigger>
       <DialogContent className='bg-gradient-to-br from-[#D9D9D9] to-[#737373] !rounded-xl max-w-96'>
         <DialogHeader>
           <DialogTitle>Enter new passkey</DialogTitle>

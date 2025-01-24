@@ -28,11 +28,11 @@ const UserAppointmentsTable = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "pending":
-        return "text-[#6b26ff]";
+        return "text-[#2d698d]";
       case "approved":
-        return "text-[#56ff61]";
+        return "text-[#23346a]";
       case "cancelled":
-        return "text-[#FF4F4E]";
+        return "text-[#292839]";
       default:
         return "text-gray-500";
     }
@@ -99,7 +99,7 @@ const UserAppointmentsTable = () => {
       <div className="mt-6">
         <button
           onClick={() => setIsPastAppointmentsVisible(!isPastAppointmentsVisible)}
-          className="bg-gray-800 text-white py-2 px-4 rounded"
+          className="bg-gray-800 text-white py-2 px-4 rounded-2xl text-sm"
         >
           {isPastAppointmentsVisible ? "Hide Past Appointments" : "Show Past Appointments"}
         </button>

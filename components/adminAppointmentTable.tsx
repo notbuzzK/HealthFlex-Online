@@ -39,11 +39,11 @@ const AdminAppointmentsTable = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "pending":
-        return "text-[#6b26ff]";
+        return "text-[#2d698d]";
       case "approved":
-        return "text-[#56ff61]";
+        return "text-[#23346a]";
       case "cancelled":
-        return "text-[#FF4F4E]";
+        return "text-[#292839]";
       default:
         return "text-gray-500";
     }
@@ -51,7 +51,7 @@ const AdminAppointmentsTable = () => {
 
   return (
     <Table>
-      <TableCaption>A list of recent appointments.</TableCaption>
+      <TableCaption>End of list means no more appointments.</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className="font-bold">Patient</TableHead>

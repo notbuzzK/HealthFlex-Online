@@ -25,11 +25,9 @@ export const services = [
         ]
     },
     {
-        name: "Ultrasound (Friday 3pm)",
-        category: "Lab Test",
-        inclusion: [
-  
-        ]
+        name: "Ultrasound",
+        category: "Consultation",
+        schedule: "Every Friday | 3 pm"
     },
     {
         name: "Hematology",
@@ -150,8 +148,8 @@ export const services = [
         name: "Bacteriology",
         category: "Lab Test",
         inclusion: [
-            "CULTURE & SENSITIVITY", 
-            "GRAM STAIN", 
+            "CULTURE & SENSITIVITY",
+            "GRAM STAIN",
             "AFBx2"
         ]
     },
@@ -159,11 +157,11 @@ export const services = [
         name: "Thyroid Function Test",
         category: "Lab Test",
         inclusion: [
-            "T3", 
-            "T4", 
-            "TSH", 
-            "FT4", 
-            "FT3", 
+            "T3",
+            "T4",
+            "TSH",
+            "FT4",
+            "FT3",
             "TSH IRMA"
         ]
     },
@@ -197,10 +195,10 @@ export const services = [
         name: "Buntis Package",
         category: "Package",
         inclusion: [
-            "URINALYSIS", 
-            "VDRL", 
-            "HEPA B SCREENING", 
-            "BLOOD TYPING", 
+            "URINALYSIS",
+            "VDRL",
+            "HEPA B SCREENING",
+            "BLOOD TYPING",
             "CBC"
         ]
     },
@@ -208,10 +206,10 @@ export const services = [
         name: "CHEM 5",
         category: "Package",
         inclusion: [
-            "FBS", 
-            "BUN", 
-            "CREA", 
-            "CHOLESTEROL", 
+            "FBS",
+            "BUN",
+            "CREA",
+            "CHOLESTEROL",
             "URIC ACID"
         ]
     },
@@ -219,11 +217,11 @@ export const services = [
         name: "CHEM 6",
         category: "Package",
         inclusion: [
-            "FBS", 
-            "BUN", 
-            "CREA", 
-            "CHOLESTEROL", 
-            "URIC ACID", 
+            "FBS",
+            "BUN",
+            "CREA",
+            "CHOLESTEROL",
+            "URIC ACID",
             "TRIGLYCERIDE"
         ]
     },
@@ -231,15 +229,15 @@ export const services = [
         name: "CHEM 8",
         category: "Package",
         inclusion: [
-            "FBS", 
-            "BUN", 
-            "CREA", 
-            "CHOLESTEROL", 
-            "URIC ACID", 
-            "TRIGLYCERIDE", 
-            "HDL", 
+            "FBS",
+            "BUN",
+            "CREA",
+            "CHOLESTEROL",
+            "URIC ACID",
+            "TRIGLYCERIDE",
+            "HDL",
             "LDL"
-    ]
+        ]
     },
     {
         name: "CHEM 10",
@@ -299,4 +297,4 @@ export const services = [
         doctor: "Dr. Florie Dela Cruz",
         schedule: "Every Sunday | 10 am - 12 pm",
     },
-  ];
+];
