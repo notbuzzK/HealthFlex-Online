@@ -344,70 +344,50 @@ export default function Home() {
       {/* Header */}
       <div id="home" className="Header">
         <div
-          className="h-screen w-screen flex flex-col items-end justify-center text-right relative"
+          className="h-screen w-screen flex flex-col justify-center items-center text-center relative"
           style={{
             background: `radial-gradient(circle at bottom, rgba(18, 32, 93, 0.8), rgba(2, 13, 56, 0.9))`,
           }}
         >
-          {/* Background Image with Low Opacity */}
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `url(${Clinicpic})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              opacity: 0.2, // Adjust opacity here for the image
-              zIndex: -1, // Place the image behind everything
-            }}
-          ></div>
-          <div className="flex items-center space-x-8 sm:mr-[150px] mr-12">
-            {/* Image Section */}
-            <div className="hidden md:block"> {/* Hide on small screens and below */}
-              <Image
-                src={newLogo} // Replace with the correct path
-                alt="Doctor"
-                className="rounded-full max-w-sm object-cover"
+          <div className="text-white space-y-4">
+            <h1 className="text-7xl font-bold">
+              HealthFlex-<span className="text-[#E2C044]">Online</span>
+            </h1>
+            <p className="text-2xl">
+              Laboratory Appointment made{" "}
+              <span className="font-semibold italic">easy</span>
+            </p>
+            <div className="flex items-center justify-center space-x-2 mt-4">
+              <input
+                type="text"
+                placeholder="Browse for services..."
+                className="w-64 px-4 py-2 rounded-full shadow-lg text-black"
+                onChange={(e) => handleSearchTermChange(e.target.value)}
               />
-            </div>
-
-            {/* Input Section */}
-            <div className="text-white space-y-4">
-              <h1 className="text-7xl font-bold">HealthFlex-<span className="text-[#E2C044]">Online</span></h1>
-              <p className="text-2xl">
-                Laboratory Appointment made{" "}
-                <span className="font-semibold italic">easy</span>
-              </p>
-              <div className="relative mt-4">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  className="w-64 px-4 py-2 pr-10 rounded-full shadow-lg text-black" // Reduced width and made it fully round
-                  onChange={(e) => handleSearchTermChange(e.target.value)}
-                />
-                <button
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-500 hover:text-blue-700"
-                  onClick={handleSearch}
+              <button
+                className="p-2 rounded-full bg-[#12205D] hover:bg-blue-700 text-white shadow-lg flex justify-center items-center"
+                onClick={handleSearch}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    viewBox="0 0 20 20"
-                    fill="#253369"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M8 2a6 6 0 104.472 10.59l3.387 3.387a1 1 0 101.414-1.414l-3.387-3.387A6 6 0 008 2zm0 2a4 4 0 100 8 4 4 0 000-8z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </button>
-              </div>
-
-
+                  <path
+                    fillRule="evenodd"
+                    d="M8 2a6 6 0 104.472 10.59l3.387 3.387a1 1 0 101.414-1.414l-3.387-3.387A6 6 0 008 2zm0 2a4 4 0 100 8 4 4 0 000-8z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
             </div>
+
+
           </div>
         </div>
       </div>
+
 
 
       <div id="about-us">
@@ -415,10 +395,10 @@ export default function Home() {
           {/* First Div */}
           <div className="About flex flex-col lg:flex-row p-20">
             {/* Text Section */}
-            <div className="flex flex-col items-end bg-[#D9D9D9] w-full">
-              <p className="text-[#253369] text-5xl font-bold mb-10">About</p>
+            <div className="flex flex-col items-start bg-[#D9D9D9] w-full">
+              <p className="text-[#253369] text-5xl font-bold mb-10 ml-40">About</p>
 
-              <p className={`text-right ${isExpanded ? '' : 'line-clamp-4'} sm:ml-40 ml-12`}>
+              <p className={`text-left ${isExpanded ? '' : 'line-clamp-4'} ml-40 mr-40`}>
                 Welcome to HealthFlex Online, your trusted partner in health and wellness. Established in 2021,
                 our mission is to provide accurate, reliable, and timely laboratory services to support your
                 healthcare needs. Located at <strong className="text-[#253369]">UNIT 5 Blue Heights Bldg., Pasong Camachile 1, General Trias Cavite</strong>, we are equipped with state-of-the-art technology
@@ -432,24 +412,16 @@ export default function Home() {
               {/* Read More Button */}
               <button
                 onClick={handleReadMore} // Assuming handleReadMore is defined for toggling isExpanded
-                className="mt-4 text-[#253369] font-semibold underline hover:text-[#E2C044]"
+                className="mt-4 text-[#253369] font-semibold underline hover:text-[#E2C044] ml-40"
               >
                 {isExpanded ? "Read Less" : "Read More"}
               </button>
-            </div>
-
-            <div className="lg:block flex justify-end mt-4 lg:mt-0">
-              <img
-                src={Clinicpic} // Replace with correct path
-                alt="Doctor"
-                className="rounded-full max-w-sm object-cover"
-              />
             </div>
           </div>
 
 
           {/* Second Div */}
-          <div className="Charter flex-1 flex flex-col justify-center items-center text-center bg-[#12205D] text-white w-full px-20 pb-20">
+          <div className="Chart flex-1 flex flex-col justify-center items-center text-center bg-[#12205D] text-white w-full px-20 pb-20">
             <p className="text-center p-4 text-4xl mt-[60px] font-bold">Organizational Chart</p>
             <div className="flex justify-evenly gap-10 mt-10">
               <div className="flex flex-col items-center pb-4">
@@ -494,8 +466,8 @@ export default function Home() {
       </div>
 
       {/* Services */}
-      <div id="services" className="Services h-screen" ref={resultsSectionRef}>
-        <div className="relative flex flex-col bg-[#D9D9D9] justify-center items-center mb-10">
+      <div id="services" className="Services h-full" ref={resultsSectionRef}>
+        <div className="relative flex flex-col bg-[#D9D9D9] justify-center items-center">
           <div className="flex flex-row mt-20">
             <h1 className="text-5xl font-bold mb-4 text-[#253369]">Services Offered</h1>
           </div>
@@ -503,7 +475,7 @@ export default function Home() {
           <div className="flex flex-col items-center lg:flex-row lg:items-start min-h-max ">
             {/*Category Menu*/}
             <div className="category-container flex flex-col 
-                            w-8/12 lg:w-64 min-h-max mr-4 mb-4
+                            w-8/12 lg:w-64 min-h-max mr-4
                             lg:bg-[#12205D] p-10 space-y-1 rounded-xl 
                             text-sm lg:text-md">
               <div className="hidden lg:block">
@@ -550,7 +522,7 @@ export default function Home() {
 
             {/*Results Section*/}
 
-            <div className="flex remove-scrollbar">
+            <div className="flex remove-scrollbar mb-4">
               {/* Left Side: Grid View */}
               <div
                 id="results-section"
