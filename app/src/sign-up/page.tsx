@@ -9,7 +9,7 @@ export default function SignUp() {
         <section className="container">
           <div className="text-center pt-10">  
             <p className="text-5xl font-bold">Patient Form</p>
-            <Link href="./">
+            <Link href="/src/login">
               HealthFlex-<span className="text-[#E2C044]">Online</span>
             </Link>
           </div>

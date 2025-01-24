@@ -49,15 +49,23 @@ export default function PasswordRecoveryModal() {
     try {
       await confirmPasswordRecovery(userId, secret, values.password);
       toast.success("Password reset successfully! Please log in with your new password.");
+      handleReroute();
+      
     } catch (error) {
       console.error("Password recovery confirmation error:", error);
       toast.error("Failed to reset password. Please try again.");
     }
   }
 
+  const handleReroute = () => {
+    setTimeout(() => {
+      window.location.href = "/src/login";
+    }, 1000); 
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-[#253369] to-[#061133]">
-      <div className="w-full max-w-md p-6 bg-white rounded shadow-md">
+      <div className="w-full max-w-md p-6 bg-gradient-to-r from-white to-gray-400 text-black !rounded-xl">
         <h1 className="text-2xl font-bold mb-6">Password Recovery</h1>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -93,11 +101,7 @@ export default function PasswordRecoveryModal() {
             </Button>
           </form>
         </Form>
-        <div>
-          <Button className="w-full mt-4 p-2 rounded border border-gray-400">
-            <a href="/src/login">Back to Login</a>
-          </Button>
-        </div>
+
       </div>
     </div>
   );

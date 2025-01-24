@@ -112,7 +112,7 @@ export default function PatientForm() {
               <FormLabel className="text-sm font-bold">Full Name</FormLabel>
               <FormControl>
                 <Input 
-                className="border rounded bg-gradient-to-r from-white to-gray-400"
+                className="border rounded bg-gradient-to-r from-white to-gray-400 text-black"
                 placeholder="Juan Dela Cruz"
                 
                 type="text"
@@ -132,7 +132,7 @@ export default function PatientForm() {
               <FormLabel className="text-sm font-bold">Email</FormLabel>
               <FormControl>
                 <Input 
-                className="border rounded bg-gradient-to-r from-white to-gray-400"
+                className="border rounded bg-gradient-to-r from-white to-gray-400 text-black"
                 placeholder="juanDelaCruz@gmal.com"
                 
                 type="email"
@@ -152,7 +152,7 @@ export default function PatientForm() {
               <FormLabel className="text-sm font-bold">Password</FormLabel>
               <FormControl>
               <PasswordInput
-                className="border rounded bg-gradient-to-r from-white to-gray-400"
+                className="border rounded bg-gradient-to-r from-white to-gray-400 text-black" 
                 placeholder="*******"
 
                 {...field}
@@ -177,7 +177,7 @@ export default function PatientForm() {
                 <FormLabel className="text-sm font-bold">Age</FormLabel>
                 <FormControl>
                   <Input 
-                    className="border rounded bg-gradient-to-r from-white to-gray-400"
+                    className="border rounded bg-gradient-to-r from-white to-gray-400 text-black"
                     placeholder="24"
                     type="number"
                     value={field.value}
@@ -201,7 +201,7 @@ export default function PatientForm() {
               <FormLabel className="text-sm font-bold">Birth day</FormLabel>
               <FormControl>
                 <Input 
-                className="border rounded bg-gradient-to-r from-white to-gray-400"
+                className="border rounded bg-gradient-to-r from-white to-gray-400 text-black"
                 placeholder="mmmm / dd / yyyy"
                 
                 type="text"
@@ -228,7 +228,7 @@ export default function PatientForm() {
                 <FormLabel className="text-sm font-bold">Contact Number</FormLabel>
                 <FormControl>
                   <Input
-                    className="border rounded bg-gradient-to-r from-white to-gray-400"
+                    className="border rounded bg-gradient-to-r from-white to-gray-400 text-black"
                     placeholder="0999xxxxxxx"
                     type="text" // 
                     {...field}

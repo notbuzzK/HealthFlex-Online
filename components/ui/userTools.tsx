@@ -73,7 +73,7 @@ export default function UserTools() {
         
         <Dialog>
           <DialogTrigger className="rounded-xl bg-[#E2C044]  hover:bg-transparent duration-100 shadow-lg w-20 h-9">Open</DialogTrigger>
-          <DialogContent className="sm:max-w-[425px] bg-gradient-to-br from-[#D9D9D9] to-[#737373] !rounded-2xl max-h-[600px] overflow-y-auto">
+          <DialogContent className="sm:max-w-[425px] bg-gradient-to-br from-[#253369] to-[#061133] !rounded-2xl max-h-[600px] overflow-y-auto text-white">
             <DialogHeader>
               <DialogTitle>Update Information</DialogTitle>
               <DialogDescription>
@@ -95,7 +95,7 @@ export default function UserTools() {
           <p>Reset Password</p>
           <Dialog>
             <DialogTrigger  className="rounded-xl bg-[#E2C044]  hover:bg-transparent duration-100 shadow-lg w-20 h-9">Open</DialogTrigger>
-            <DialogContent className="bg-blue-950 !rounded-xl">
+            <DialogContent className="bg-gradient-to-br from-[#253369] to-[#061133] !rounded-xl">
               <DialogHeader>
                 <DialogTitle className="text-white">Password Recovery</DialogTitle>
                 <DialogDescription className="text-white">Enter your email address to reset your password.</DialogDescription>
@@ -132,7 +132,7 @@ export default function UserTools() {
         <p className="py-4">Contact Healthflex</p>
         <Dialog>
           <DialogTrigger className="rounded-xl bg-[#E2C044]  hover:bg-transparent duration-100 shadow-lg w-20 h-9">Open</DialogTrigger>
-          <DialogContent className="sm:max-w-[425px] bg-gradient-to-br from-[#D9D9D9] to-[#737373] !rounded-2xl max-h-[600px] overflow-y-auto">
+          <DialogContent className="sm:max-w-[425px] bg-gradient-to-br from-[#253369] to-[#061133] text-white !rounded-2xl max-h-[600px] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>HealthFlex contacts</DialogTitle>
               <div>

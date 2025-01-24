@@ -21,13 +21,12 @@ export default function SignUp() {
   }, [router]);
 
   const handleMakeAppointment = () => {
-    // Navigate to the 'appointment' page inside the 'user-dash' folder
     router.push("/src/appointment");
   };
 
   return (
     <div className="bg-gradient-to-br remove-scrollbar from-[#253369] to-[#061133] text-black">
-      <section className="container min-h-screen remove-scrollbar grid lg:grid-cols-7 lg:grid-rows-4 gap-4 max-h-screen">
+      <section className="container min-h-screen remove-scrollbar grid lg:grid-cols-7 lg:grid-rows-4 gap-4 max-h ">
 
         {/* Make Appointment */}
         <div className="bg-gradient-to-br from-[#D9D9D9] to-[#737373] drop-shadow-xl  md:col-span-3 md:row-span-1 m-4 rounded-3xl">

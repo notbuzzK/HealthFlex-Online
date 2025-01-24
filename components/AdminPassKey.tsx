@@ -68,7 +68,7 @@ export default function AdminPassKey() {
     <div>
       <Dialog>
       <DialogTrigger className='text-green-500'>Admin</DialogTrigger>
-      <DialogContent className='bg-gradient-to-br from-[#D9D9D9] to-[#737373] !rounded-xl max-w-96'>
+      <DialogContent className='bg-gradient-to-br from-[#253369] to-[#061133] !rounded-xl max-w-96 text-white'>
         <DialogHeader>
           <DialogTitle>Enter Admin passkey</DialogTitle>
           
@@ -82,14 +82,14 @@ export default function AdminPassKey() {
                   <FormItem>
                     <FormControl>
                       <InputOTP maxLength={8} {...field}>
-                        <InputOTPGroup className="bg-gradient-to-br from-[#253369] to-[#061133] !text-white !rounded-l-xl">
+                        <InputOTPGroup className="bg-gradient-to-r from-white to-gray-400 !text-black !rounded-l-xl">
                           <InputOTPSlot index={0} className="!rounded-l-xl"/>
                           <InputOTPSlot index={1} />
                           <InputOTPSlot index={2} />
                           <InputOTPSlot index={3} />
                         </InputOTPGroup>
                         <InputOTPSeparator />
-                        <InputOTPGroup className="bg-gradient-to-br from-[#253369] to-[#061133] !text-white !rounded-r-xl">
+                        <InputOTPGroup className="bg-gradient-to-l from-white to-gray-400 !text-black !rounded-r-xl">
                           <InputOTPSlot index={4} />
                           <InputOTPSlot index={5} />
                           <InputOTPSlot index={6} />
@@ -103,8 +103,8 @@ export default function AdminPassKey() {
                 )}
               />
               <div className="flex justify-between gap-4">
-                <Button type="button" className="bg-[#FF4F4E] rounded-xl" onClick={handleLogout}>Logout</Button>
-                <Button type="submit" className="bg-[#E2C044] rounded-xl">Submit</Button>
+                <Button type="button" className="bg-[#FF4F4E] rounded-xl text-black" onClick={handleLogout}>Logout</Button>
+                <Button type="submit" className="bg-[#E2C044] rounded-xl text-black">Submit</Button>
               </div>
             </form>
           </Form>

@@ -87,7 +87,7 @@ export default function UpdateUser() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 max-w-3xl mx-auto py-3">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 max-w-3xl mx-auto py-3 ">
         
         <FormField
           control={form.control}
@@ -98,7 +98,7 @@ export default function UpdateUser() {
               <FormControl>
                 <Input 
                 placeholder="update name"
-                className="rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
+                className="rounded bg-gradient-to-r from-white to-gray-400 text-black"
                 type=""
                 {...field} />
               </FormControl>
@@ -117,7 +117,7 @@ export default function UpdateUser() {
               <FormControl>
                 <Input 
                 placeholder="enter new number"
-                className="rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
+                className="rounded bg-gradient-to-r from-white to-gray-400 text-black"
                 type="text"
                 {...field} />
               </FormControl>
@@ -136,7 +136,7 @@ export default function UpdateUser() {
               <FormControl>
                 <Input 
                 placeholder="enter new age"
-                className="rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
+                className="rounded bg-gradient-to-r from-white to-gray-400 text-black"
                 type="number"
                 onChange={(e) => field.onChange(Number(e.target.value))} 
               />
@@ -156,7 +156,7 @@ export default function UpdateUser() {
               <FormControl>
                 <Input 
                 placeholder="enter new birthday"
-                className="rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
+                className="rounded bg-gradient-to-r from-white to-gray-400 text-black"
                 type="text"
                 {...field} />
               </FormControl>
@@ -173,7 +173,7 @@ export default function UpdateUser() {
             <FormItem>
               <FormLabel>Sex</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl className="rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white">
+                <FormControl className="rounded bg-gradient-to-r from-white to-gray-400 text-black">
                   <SelectTrigger>
                     <SelectValue placeholder="" />
                   </SelectTrigger>
@@ -201,7 +201,7 @@ export default function UpdateUser() {
                       values={field.value ?? []}
                       onValuesChange={field.onChange}
                       loop
-                      className="rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
+                      className="rounded bg-gradient-to-r from-white to-gray-400 text-black"
                     >
                       <MultiSelectorTrigger>
                         <MultiSelectorInput placeholder="Select Medical Concerns"/>
