@@ -25,10 +25,10 @@ export const services = [
         ]
     },
     {
-        name: "Ultrasound",
+        name: "Ultrasound (Friday 3pm)",
         category: "Lab Test",
         inclusion: [
-            "Every Friday | 3 pm"
+  
         ]
     },
     {
@@ -300,4 +300,3 @@ export const services = [
         schedule: "Every Sunday | 10 am - 12 pm",
     },
   ];
-  

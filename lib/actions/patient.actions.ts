@@ -107,6 +107,7 @@ export async function makeAppointment({
   userId,
   status,
   fullName,
+  selectedInclusions, // New parameter
 }: {
   lab: string[];
   packages: string[];
@@ -116,6 +117,7 @@ export async function makeAppointment({
   userId: string;
   status: appointmentStatus;
   fullName: string;
+  selectedInclusions: string[]; // New parameter
 }) {
   try {
     const appointment = await databases.createDocument(
@@ -131,19 +133,20 @@ export async function makeAppointment({
         userId,
         status,
         fullName,
+        selectedInclusions, // Include in document
       },
       [
         sdk.Permission.read("users"),
         sdk.Permission.update("users"),
       ]
     );
-    console.log(appointment.userId);
     return appointment;
   } catch (error) {
     console.error("Error creating appointment:", error);
     throw error;
   }
 }
+
 
 export async function getUserAppointments(userId: string) {
   try {

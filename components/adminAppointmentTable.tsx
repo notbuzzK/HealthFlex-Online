@@ -17,15 +17,23 @@ const AdminAppointmentsTable = () => {
 
   useEffect(() => {
     const fetchAppointments = async () => {
-      const appointments = await getAllAppointments();
-      setAppointments(appointments);
+      try {
+        const appointments = await getAllAppointments();
+        setAppointments(appointments);
+      } catch (error) {
+        console.error("Failed to fetch appointments:", error);
+      }
     };
     fetchAppointments();
   }, []);
 
   const refreshAppointments = async () => {
-    const updatedAppointments = await getAllAppointments();
-    setAppointments(updatedAppointments);
+    try {
+      const updatedAppointments = await getAllAppointments();
+      setAppointments(updatedAppointments);
+    } catch (error) {
+      console.error("Failed to refresh appointments:", error);
+    }
   };
 
   const getStatusColor = (status: string) => {
@@ -52,65 +60,78 @@ const AdminAppointmentsTable = () => {
           <TableHead className="font-bold">Service</TableHead>
           <TableHead className="font-bold">Note from Patient</TableHead>
           <TableHead className="font-bold">Reason</TableHead>
-          <TableHead className="text-center font-bold ">Actions</TableHead>
+          <TableHead className="text-center font-bold">Actions</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {appointments
-          .filter(appointment => {
-            const appointmentDate = new Date(appointment.dateTime);
-            const today = new Date();
+        {appointments.length > 0 ? (
+          appointments
+            .filter(appointment => {
+              const appointmentDate = new Date(appointment.dateTime);
+              const today = new Date();
 
-            // Start and end of today
-            const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
-            const endOfDay = startOfDay + 86400000 - 1;
+              // Start and end of today
+              const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime();
+              const endOfDay = startOfDay + 86400000 - 1;
 
-            // Include appointments from today (regardless of time) and future
-            return appointmentDate.getTime() >= startOfDay;
-          })
-          .sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime))
-          .map((appointment, index) => (
-            <TableRow
-              key={index}
-              className={
-                new Date(appointment.dateTime).toDateString() === new Date().toDateString()
-                  ? "bg-blue-100" // Highlight for today's appointments
-                  : ""
-              }
-            >
-              <TableCell className="underline">
-                <UserInfoModal fullName={appointment.fullName} />
-              </TableCell>
-              <TableCell
-                className={`${getStatusColor(appointment.status)} py-4 px-2 capitalize font-bold text-center rounded`}
+              // Include appointments from today (regardless of time) and future
+              return appointmentDate.getTime() >= startOfDay;
+            })
+            .sort((a, b) => new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime())
+            .map((appointment, index) => (
+              <TableRow
+                key={index}
+                className={
+                  new Date(appointment.dateTime).toDateString() === new Date().toDateString()
+                    ? "bg-blue-100" // Highlight for today's appointments
+                    : ""
+                }
               >
-                {appointment.status}
-              </TableCell>
-              <TableCell>
-                {new Date(appointment.dateTime).toLocaleString('en-US', {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  hour12: true,
-                })}
-              </TableCell>
-              <TableCell>
-                {[...appointment.lab, ...appointment.packages, ...appointment.consultation].join(', ')}
-              </TableCell>
-              <TableCell>{appointment.note}</TableCell>
-              <TableCell>{appointment.reason}</TableCell>
-              <TableCell className="text-right">
-                <AppointmentModal
-                  appointment={appointment}
-                  onUpdate={refreshAppointments} // Refresh table on update
-                />
-              </TableCell>
-            </TableRow>
-          ))}
-
-
+                <TableCell className="underline">
+                  <UserInfoModal fullName={appointment.fullName || "Unknown"} />
+                </TableCell>
+                <TableCell
+                  className={`${getStatusColor(appointment.status)} py-4 px-2 capitalize font-bold text-center rounded`}
+                >
+                  {appointment.status || "Unknown"}
+                </TableCell>
+                <TableCell>
+                  {appointment.dateTime
+                    ? new Date(appointment.dateTime).toLocaleString('en-US', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true,
+                      })
+                    : "No date provided"}
+                </TableCell>
+                <TableCell>
+                  {[
+                    ...(appointment.lab || []), 
+                    ...(appointment.packages || []), 
+                    ...(appointment.consultation || []), 
+                    ...(appointment.selectedInclusions || [])
+                  ].join(', ') || "No services selected"}
+                </TableCell>
+                <TableCell>{appointment.note || "No notes"}</TableCell>
+                <TableCell>{appointment.reason}</TableCell>
+                <TableCell className="text-right">
+                  <AppointmentModal
+                    appointment={appointment}
+                    onUpdate={refreshAppointments} // Refresh table on update
+                  />
+                </TableCell>
+              </TableRow>
+            ))
+        ) : (
+          <TableRow>
+            <TableCell colSpan={7} className="text-center">
+              No appointments found.
+            </TableCell>
+          </TableRow>
+        )}
       </TableBody>
     </Table>
   );

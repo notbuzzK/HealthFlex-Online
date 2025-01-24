@@ -52,6 +52,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import { services } from "@/app/services"
 
 const formSchema = z.object({
   lab: z.array(z.string()).nonempty("Please at least one item").optional(),
@@ -63,6 +64,22 @@ const formSchema = z.object({
 
 export default function MyForm() {
   const router = useRouter();
+
+
+  const [selectedService, setSelectedService] = useState<string | null>(null);
+  const [availableInclusions, setAvailableInclusions] = useState<string[]>([]);
+  const [serviceInclusions, setServiceInclusions] = useState<Record<string, string[]>>({});
+
+
+  // Function to handle service selection and show inclusions
+  const handleServiceSelect = (serviceName: string) => {
+    const service = services.find((s) => s.name === serviceName);
+    if (service && service.inclusion) {
+      setSelectedService(serviceName);
+      setAvailableInclusions(service.inclusion);
+    }
+  };
+  
 
   useEffect(() => {
     const verifyAccess = async () => {
@@ -81,217 +98,265 @@ export default function MyForm() {
     },
   });
 
+  const handleInclusionChange = (serviceName: string, inclusions: string[]) => {
+    setServiceInclusions((prev) => ({
+      ...prev,
+      [serviceName]: inclusions, // Update inclusions for this service
+    }));
+  };
+  
+
 
   type AppointmentStatus = "pending" | "approved" | "declined";
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const user = await account.get();
-      console.log(user.$id);
+      const allInclusions = Object.values(serviceInclusions).flat();
+  
       const appointmentValues = {
         lab: values.lab || [],
         packages: values.packages || [],
         consultation: values.consultation || [],
         note: values.notes || "",
         dateTime: moment(values.dateTime).toISOString(),
-        userId: user.$id, 
+        userId: user.$id,
         status: "pending" as AppointmentStatus,
         fullName: user.name,
+        selectedInclusions: allInclusions, // Include all inclusions
       };
-      console.log(appointmentValues.userId);
-
   
       const response = await makeAppointment(appointmentValues);
       toast.success("Appointment made successfully!");
       router.push("/src/user-dash");
     } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message || "Appointment creation failed");
-      } else {
-        toast.error("Unknown error occurred.");
-      }
+      toast.error(
+        error instanceof Error ? error.message : "Unknown error occurred."
+      );
       console.error("Error creating appointment:", error);
     }
   }
   
+  
   return (
-    <div className="min-h-screen remove-scrollbar bg-gradient-to-br from-[#253369] to-[#061133] flex">
+    <div className="min-h-screen remove-scrollbar bg-gradient-to-br from-[#253369] to-[#061133] felx">
       <section className="m-auto bg-gradient-to-br from-[#D9D9D9] to-[#737373] drop-shadow-xl rounded-3xl p-5 w-[70%] ">
         <p className="text-2xl md:text-4xl font-bold">Appointment</p>
         <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 max-w-3xl mx-auto py-10">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 max-w-3xl mx-auto py-10">
 
-              <div className="grid md:grid-cols-12 gap-4">
-              
+            <div className="grid md:grid-cols-12 gap-4">
+
               <div className="col-span-4">
-                
-              <FormField
+
+                <FormField
                   control={form.control}
                   name="lab"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-lg font-bold">Lab services</FormLabel>
-                      <FormControl>
-                        <MultiSelector
-                          values={field.value ?? []}
-                          onValuesChange={field.onChange}
-                          loop
-                          className="max-w-xs rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
-                        >
-                          <MultiSelectorTrigger>
-                            <MultiSelectorInput placeholder="select services" />
-                          </MultiSelectorTrigger>
-                          <MultiSelectorContent>
-                          <MultiSelectorList className="bg-gray-300 rounded text-black">
-                            <MultiSelectorItem value={"Basic Tests"}>Basic Tests</MultiSelectorItem>
-                            <MultiSelectorItem value={"Enzymes"}>Enzymes</MultiSelectorItem>
-                            <MultiSelectorItem value={"Hepatitis"}>Hepatitis</MultiSelectorItem>
-                            <MultiSelectorItem value={"Thyroid Function"}>Thyroid Function</MultiSelectorItem>
-                            <MultiSelectorItem value={"Hematology"}>Hematology</MultiSelectorItem>
-                            <MultiSelectorItem value={"Electrolytes"}>Electrolytes</MultiSelectorItem>
-                            <MultiSelectorItem value={"Serology"}>Serology</MultiSelectorItem>
-                            <MultiSelectorItem value={"Hormones"}>Hormones</MultiSelectorItem>
-                            <MultiSelectorItem value={"Blood Chemistry"}>Blood Chemistry</MultiSelectorItem>
-                            <MultiSelectorItem value={"Clinical Microscopy"}>Clinical Microscopy</MultiSelectorItem>
-                            <MultiSelectorItem value={"Bacteriology"}>Bacteriology</MultiSelectorItem>
-                            <MultiSelectorItem value={"Tumor Markers"}>Tumor Markers</MultiSelectorItem>
-                          </MultiSelectorList>
-                          </MultiSelectorContent>
-                        </MultiSelector>
-                      </FormControl>
-                      <FormDescription>Select multiple, if any</FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              
-              <div className="col-span-4">
-                
-              <FormField
-                  control={form.control}
-                  name="packages"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-lg font-bold">Packages</FormLabel>
-                      <FormControl>
-                        <MultiSelector
-                          values={field.value ?? []}
-                          onValuesChange={field.onChange}
-                          loop
-                          className="max-w-xs rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
-                        >
-                          <MultiSelectorTrigger>
-                            <MultiSelectorInput placeholder="Select packages" />
-                          </MultiSelectorTrigger>
-                          <MultiSelectorContent>
-                          <MultiSelectorList className="bg-gray-300 rounded text-black">
-                            <MultiSelectorItem value={"Buntis Package"}>Buntis Package</MultiSelectorItem>
-                            <MultiSelectorItem value={"CHEM 5"}>CHEM 5</MultiSelectorItem>
-                            <MultiSelectorItem value={"CHEM 6"}>CHEM 6</MultiSelectorItem>
-                            <MultiSelectorItem value={"CHEM 8"}>CHEM 8</MultiSelectorItem>
-                            <MultiSelectorItem value={"CHEM 10"}>CHEM 10</MultiSelectorItem>
-                            <MultiSelectorItem value={"CHEM 12"}>CHEM 12</MultiSelectorItem>
-                          </MultiSelectorList>
-                          </MultiSelectorContent>
-                        </MultiSelector>
-                      </FormControl>
-                      <FormDescription>Select multiple, if any</FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              
-              <div className="col-span-4">
-                
-              <FormField
-                  control={form.control}
-                  name="consultation"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-lg font-bold">Consulation</FormLabel>
-                      <FormControl>
-                        <MultiSelector
-                          values={field.value ?? []}
-                          onValuesChange={field.onChange}
-                          loop
-                          className="max-w-xs rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
-                        >
-                          <MultiSelectorTrigger>
-                            <MultiSelectorInput placeholder="Select consultation" />
-                          </MultiSelectorTrigger>
-                          <MultiSelectorContent>
-                          <MultiSelectorList className="bg-gray-300 rounded text-black">
-                            <MultiSelectorItem value={"OB-GYNE"}>OB-GYNE</MultiSelectorItem>
-                            <MultiSelectorItem value={"PEDIATRICIAN"}>PEDIATRICIAN</MultiSelectorItem>
-                            <MultiSelectorItem value={"GENERAL PHYSICIAN"}>GENERAL PHYSICIAN</MultiSelectorItem>
-                          </MultiSelectorList>
-                          </MultiSelectorContent>
-                        </MultiSelector>
-                      </FormControl>
-                      <FormDescription>Select multiple, if any</FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              
-            </div>
+                  render={({ field }) => {
+                    const labTest = services.filter(service => service.category === "Lab Test");
 
-                <div className="grid grid-cols-12 gap-4">
-                  <div className="col-span-12">
-                    <FormField
-                      control={form.control}
-                      name="dateTime"
-                      render={({ field }) => (
+                    return (
                       <FormItem>
-                        <FormLabel className="text-lg font-bold">Date and Time</FormLabel>
+                        <FormLabel className="text-lg font-bold">Lab Test</FormLabel>
                         <FormControl>
-                          <SmartDatetimeInput
-                            value={field.value}
-                            onValueChange={field.onChange}
-                            placeholder="e.g. Tomorrow morning 9am"
-                            className="resize-none rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
-                            
-                          />
+                          <MultiSelector
+                            values={field.value ?? []}
+                            onValuesChange={value => {
+                              field.onChange(value);
+                              handleServiceSelect(value[value.length - 1]);
+                            }}
+                            loop
+                            className="max-w-xs rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
+                          >
+                            <MultiSelectorTrigger>
+                              <MultiSelectorInput placeholder="Select services" />
+                            </MultiSelectorTrigger>
+                            <MultiSelectorContent>
+                              <MultiSelectorList className="bg-gray-300 rounded text-black">
+                                {labTest.map(service => (
+                                  <MultiSelectorItem key={service.name} value={service.name}>
+                                    {service.name}
+                                  </MultiSelectorItem>
+                                ))}
+                              </MultiSelectorList>
+                            </MultiSelectorContent>
+                          </MultiSelector>
                         </FormControl>
-                        <FormDescription>Click on calendar icon to set</FormDescription>
+                        {selectedService && availableInclusions.length > 0 && (
+                        <div className="mt-4">
+                          <p className="text-md font-semibold">Inclusions for {selectedService}</p>
+                          <MultiSelector
+                            values={serviceInclusions[selectedService] || []}
+                            onValuesChange={(inclusions) =>
+                              handleInclusionChange(selectedService, inclusions)
+                            }
+                            className="max-w-xs rounded bg-gray-100 text-black"
+                          >
+                            <MultiSelectorTrigger>
+                              <MultiSelectorInput placeholder="Select inclusions" />
+                            </MultiSelectorTrigger>
+                            <MultiSelectorContent>
+                              <MultiSelectorList className="bg-white rounded">
+                                {availableInclusions.map((inclusion) => (
+                                  <MultiSelectorItem key={inclusion} value={inclusion}>
+                                    {inclusion}
+                                  </MultiSelectorItem>
+                                ))}
+                              </MultiSelectorList>
+                            </MultiSelectorContent>
+                          </MultiSelector>
+                        </div>
+                      )}
+
+                        <FormDescription>Select multiple, if any</FormDescription>
                         <FormMessage />
                       </FormItem>
-                      )}
-                    />
-                  </div>
+                    );
+                  }}
+                />
+              </div>
 
-                </div>
+              <div className="col-span-4">
 
-                <div className="grid md:grid-cols-12 gap-4">
+                <FormField
+                  control={form.control}
+                  name="packages"
+                  render={({ field }) => {
+                    const packages = services.filter(service => service.category === "Package");
 
-                  <div className="col-span-12">
-                    <FormField
-                      control={form.control}
-                      name="notes"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-lg font-bold">Note to Staff</FormLabel>
-                          <FormControl>
-                            <Textarea
-                              className="resize-none rounded bg-gradient-to-r from-[#253369] to-[#061133] text-white"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormDescription>Enter notes (optional)</FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </div>
-                <div className="flex justify-end gap-4">
-                  <Button type="button" className="bg-white- text-white rounded-3xl " onClick={() => router.push("/src/user-dash")}>Cancel</Button>
-                  <Button type="submit" className="bg-[#E2C044] text-white drop-shadow-lg rounded-3xl">Book</Button>
-                </div>
-              </form>
-            </Form>
+                    return (
+                      <FormItem>
+                        <FormLabel className="text-lg font-bold">Packages</FormLabel>
+                        <FormControl>
+                          <MultiSelector
+                            values={field.value ?? []}
+                            onValuesChange={value => {
+                              field.onChange(value);
+                              handleServiceSelect(value[value.length - 1]);
+                            }}
+                            loop
+                            className="max-w-xs rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
+                          >
+                            <MultiSelectorTrigger>
+                              <MultiSelectorInput placeholder="Select services" />
+                            </MultiSelectorTrigger>
+                            <MultiSelectorContent>
+                              <MultiSelectorList className="bg-gray-300 rounded text-black">
+                                {packages.map(service => (
+                                  <MultiSelectorItem key={service.name} value={service.name}>
+                                    {service.name}
+                                  </MultiSelectorItem>
+                                ))}
+                              </MultiSelectorList>
+                            </MultiSelectorContent>
+                          </MultiSelector>
+                        </FormControl>
+                        <FormDescription>Select multiple, if any</FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                />;
+              </div>
+
+              <div className="col-span-4">
+
+                <FormField
+                  control={form.control}
+                  name="consultation"
+                  render={({ field }) => {
+                    const packages = services.filter(service => service.category === "Consultation");
+
+                    return (
+                      <FormItem>
+                        <FormLabel className="text-lg font-bold">Packages</FormLabel>
+                        <FormControl>
+                          <MultiSelector
+                            values={field.value ?? []}
+                            onValuesChange={value => {
+                              field.onChange(value);
+                              handleServiceSelect(value[value.length - 1]);
+                            }}
+                            loop
+                            className="max-w-xs rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
+                          >
+                            <MultiSelectorTrigger>
+                              <MultiSelectorInput placeholder="Select services" />
+                            </MultiSelectorTrigger>
+                            <MultiSelectorContent>
+                              <MultiSelectorList className="bg-gray-300 rounded text-black">
+                                {packages.map(service => (
+                                  <MultiSelectorItem key={service.name} value={service.name}>
+                                    {service.name}
+                                  </MultiSelectorItem>
+                                ))}
+                              </MultiSelectorList>
+                            </MultiSelectorContent>
+                          </MultiSelector>
+                        </FormControl>
+                        <FormDescription>Select multiple, if any</FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                />;
+              </div>
+
+            </div>
+
+            <div className="grid grid-cols-12 gap-4">
+              <div className="col-span-12">
+                <FormField
+                  control={form.control}
+                  name="dateTime"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-lg font-bold">Date and Time</FormLabel>
+                      <FormControl>
+                        <SmartDatetimeInput
+                          value={field.value}
+                          onValueChange={field.onChange}
+                          placeholder="e.g. Tomorrow morning 9am"
+                          className="resize-none rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
+
+                        />
+                      </FormControl>
+                      <FormDescription>Click on calendar icon to set</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+            </div>
+
+            <div className="grid md:grid-cols-12 gap-4">
+
+              <div className="col-span-12">
+                <FormField
+                  control={form.control}
+                  name="notes"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-lg font-bold">Note to Staff</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          className="resize-none rounded bg-gradient-to-r from-[#253369] to-[#061133] text-white"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>Enter notes (optional)</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+            <div className="flex justify-end gap-4">
+              <Button type="button" className="bg-white- text-white rounded-3xl " onClick={() => router.push("/src/user-dash")}>Cancel</Button>
+              <Button type="submit" className="bg-[#E2C044] text-white drop-shadow-lg rounded-3xl">Book</Button>
+            </div>
+          </form>
+        </Form>
       </section>
     </div>
   );
