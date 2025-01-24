@@ -117,53 +117,7 @@ export default function MyForm() {
     <div className="min-h-screen remove-scrollbar bg-gradient-to-br from-[#253369] to-[#061133] flex">
       <section className="m-auto bg-gradient-to-br from-[#D9D9D9] to-[#737373] drop-shadow-xl rounded-3xl p-5 w-[70%] ">
         <p className="text-2xl md:text-4xl font-bold">Appointment</p>
-        <div className="flex flex-row justify-between items-center">
-          <div className="bg-green">
-            <Accordion type="single" collapsible>
-              <AccordionItem value="item-1">
-                <AccordionTrigger>Lab Tests</AccordionTrigger>
-                <AccordionContent>
-                  <Accordion>
-                    <AccordionItem value="item-1">
-                      <AccordionTrigger>Basic Tests</AccordionTrigger>
-                      <AccordionContent>
-                        <ul className="">
-                          <li className="pt-1">▪️CBC PC</li>
-                          <li className="pt-1">▪️Urinalysis</li>
-                          <li className="pt-1">▪️Fecalysis</li>
-                          <li className="pt-1">▪️Blood Typing</li>
-                          <li className="pt-1">▪️Dengue Duo</li>
-                          <li className="pt-1">▪️ECG</li>
-                          <li className="pt-1">▪️HIV Test</li>
-                          <li className="pt-1">▪️75 OGTT</li>
-                          <li className="pt-1">▪️Hepa B</li>
-                          <li className="pt-1">▪️VDRL</li>
-                          <li className="pt-1">▪️Thyroid Function Test</li>
-                          <li className="pt-1">▪️Hepatitis Profile</li>
-                          <li className="pt-1">▪️Liver Profile</li>
-                          <li className="pt-1">▪️Kidney Profile</li>
-                          <li className="pt-1">▪️Antigen Swab</li>
-                          <li className="pt-1">▪️RT-PCR</li>
-                          <li className="pt-1">▪️X-ray</li>
-                          <li className="pt-1">▪️Drug Testing</li>
-                          <li className="pt-1">▪️Pap Smear</li>
-                        </ul>
-                      </AccordionContent>
-                    </AccordionItem>
-                    <AccordionItem value="item-2">
-                      <AccordionTrigger>Ultrasound</AccordionTrigger>
-                      <AccordionContent>
-                        <p>Advanced Tests</p>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-
-          </div>
-          <div>
-            <Form {...form}>
+        <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 max-w-3xl mx-auto py-10">
 
               <div className="grid md:grid-cols-12 gap-4">
@@ -338,8 +292,6 @@ export default function MyForm() {
                 </div>
               </form>
             </Form>
-          </div>
-        </div>
       </section>
     </div>
   );
