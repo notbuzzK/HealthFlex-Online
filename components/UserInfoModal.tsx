@@ -41,7 +41,7 @@ export default function UserInfoModal({ fullName }: { fullName: string }) {
     <div>
       <Dialog>
         <DialogTrigger className="!text-left">{userInfo.fullName}</DialogTrigger>
-        <DialogContent className="sm:max-w-[600px] bg-gradient-to-br from-[#D9D9D9] to-[#737373] !rounded-2xl max-h-[600px] overflow-y-auto">
+        <DialogContent className="sm:max-w-[600px] bg-gradient-to-br from-[#253369] to-[#061133] text-white !rounded-2xl max-h-[600px] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Patient Info</DialogTitle>
             <div>

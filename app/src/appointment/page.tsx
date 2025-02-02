@@ -72,11 +72,18 @@ export default function MyForm() {
 
 
   // Function to handle service selection and show inclusions
-  const handleServiceSelect = (serviceName: string) => {
-    const service = services.find((s) => s.name === serviceName);
-    if (service && service.inclusion) {
-      setSelectedService(serviceName);
-      setAvailableInclusions(service.inclusion);
+  const handleServiceSelect = (serviceName: string, category: string) => {
+    if (category === "Lab Test") {
+      const service = services.find((s) => s.name === serviceName);
+      if (service && service.inclusion) {
+        setSelectedService(serviceName);
+        setAvailableInclusions(service.inclusion);
+      } else {
+        setAvailableInclusions([]);
+      }
+    } else {
+      setSelectedService(null);
+      setAvailableInclusions([]); // Clear inclusions for non-Lab Test categories
     }
   };
   
@@ -122,7 +129,6 @@ export default function MyForm() {
         userId: user.$id,
         status: "pending" as AppointmentStatus,
         fullName: user.name,
-        selectedInclusions: allInclusions, // Include all inclusions
       };
   
       const response = await makeAppointment(appointmentValues);
@@ -158,28 +164,28 @@ export default function MyForm() {
                       <FormItem>
                         <FormLabel className="text-lg font-bold">Lab Test</FormLabel>
                         <FormControl>
-                          <MultiSelector
-                            values={field.value ?? []}
-                            onValuesChange={value => {
-                              field.onChange(value);
-                              handleServiceSelect(value[value.length - 1]);
-                            }}
-                            loop
-                            className="max-w-xs rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
-                          >
-                            <MultiSelectorTrigger>
-                              <MultiSelectorInput placeholder="Select services" />
-                            </MultiSelectorTrigger>
-                            <MultiSelectorContent>
-                              <MultiSelectorList className="bg-gray-300 rounded text-black">
-                                {labTest.map(service => (
-                                  <MultiSelectorItem key={service.name} value={service.name}>
-                                    {service.name}
-                                  </MultiSelectorItem>
-                                ))}
-                              </MultiSelectorList>
-                            </MultiSelectorContent>
-                          </MultiSelector>
+                        <MultiSelector
+  values={field.value ?? []}
+  onValuesChange={(value) => {
+    field.onChange(value);
+    handleServiceSelect(value[value.length - 1], "Lab Test");
+  }}
+  loop
+  className="max-w-xs rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
+>
+  <MultiSelectorTrigger>
+    <MultiSelectorInput placeholder="Select services" />
+  </MultiSelectorTrigger>
+  <MultiSelectorContent>
+    <MultiSelectorList className="bg-gray-300 rounded text-black">
+      {labTest.map((service) => (
+        <MultiSelectorItem key={service.name} value={service.name}>
+          {service.name}
+        </MultiSelectorItem>
+      ))}
+    </MultiSelectorList>
+  </MultiSelectorContent>
+</MultiSelector>
                         </FormControl>
                         {selectedService && availableInclusions.length > 0 && (
                         <div className="mt-4">
@@ -192,7 +198,7 @@ export default function MyForm() {
                             className="max-w-xs rounded bg-gray-100 text-black"
                           >
                             <MultiSelectorTrigger>
-                              <MultiSelectorInput placeholder="Select inclusions" />
+                              <MultiSelectorInput placeholder="view inclusions" />
                             </MultiSelectorTrigger>
                             <MultiSelectorContent>
                               <MultiSelectorList className="bg-white rounded">
@@ -227,28 +233,28 @@ export default function MyForm() {
                       <FormItem>
                         <FormLabel className="text-lg font-bold">Packages</FormLabel>
                         <FormControl>
-                          <MultiSelector
-                            values={field.value ?? []}
-                            onValuesChange={value => {
-                              field.onChange(value);
-                              handleServiceSelect(value[value.length - 1]);
-                            }}
-                            loop
-                            className="max-w-xs rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
-                          >
-                            <MultiSelectorTrigger>
-                              <MultiSelectorInput placeholder="Select services" />
-                            </MultiSelectorTrigger>
-                            <MultiSelectorContent>
-                              <MultiSelectorList className="bg-gray-300 rounded text-black">
-                                {packages.map(service => (
-                                  <MultiSelectorItem key={service.name} value={service.name}>
-                                    {service.name}
-                                  </MultiSelectorItem>
-                                ))}
-                              </MultiSelectorList>
-                            </MultiSelectorContent>
-                          </MultiSelector>
+                        <MultiSelector
+  values={field.value ?? []}
+  onValuesChange={(value) => {
+    field.onChange(value);
+    // Do not show inclusions for packages
+  }}
+  loop
+  className="max-w-xs rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
+>
+  <MultiSelectorTrigger>
+    <MultiSelectorInput placeholder="Select services" />
+  </MultiSelectorTrigger>
+  <MultiSelectorContent>
+    <MultiSelectorList className="bg-gray-300 rounded text-black">
+      {packages.map((service) => (
+        <MultiSelectorItem key={service.name} value={service.name}>
+          {service.name}
+        </MultiSelectorItem>
+      ))}
+    </MultiSelectorList>
+  </MultiSelectorContent>
+</MultiSelector>
                         </FormControl>
                         <FormDescription>Select multiple, if any</FormDescription>
                         <FormMessage />
@@ -270,28 +276,28 @@ export default function MyForm() {
                       <FormItem>
                         <FormLabel className="text-lg font-bold">Packages</FormLabel>
                         <FormControl>
-                          <MultiSelector
-                            values={field.value ?? []}
-                            onValuesChange={value => {
-                              field.onChange(value);
-                              handleServiceSelect(value[value.length - 1]);
-                            }}
-                            loop
-                            className="max-w-xs rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
-                          >
-                            <MultiSelectorTrigger>
-                              <MultiSelectorInput placeholder="Select services" />
-                            </MultiSelectorTrigger>
-                            <MultiSelectorContent>
-                              <MultiSelectorList className="bg-gray-300 rounded text-black">
-                                {packages.map(service => (
-                                  <MultiSelectorItem key={service.name} value={service.name}>
-                                    {service.name}
-                                  </MultiSelectorItem>
-                                ))}
-                              </MultiSelectorList>
-                            </MultiSelectorContent>
-                          </MultiSelector>
+                        <MultiSelector
+  values={field.value ?? []}
+  onValuesChange={(value) => {
+    field.onChange(value);
+    // Do not show inclusions for consultations
+  }}
+  loop
+  className="max-w-xs rounded bg-gradient-to-r from-[#253369] to-[#061133] !text-white"
+>
+  <MultiSelectorTrigger>
+    <MultiSelectorInput placeholder="Select services" />
+  </MultiSelectorTrigger>
+  <MultiSelectorContent>
+    <MultiSelectorList className="bg-gray-300 rounded text-black">
+      {packages.map((service) => (
+        <MultiSelectorItem key={service.name} value={service.name}>
+          {service.name}
+        </MultiSelectorItem>
+      ))}
+    </MultiSelectorList>
+  </MultiSelectorContent>
+</MultiSelector>
                         </FormControl>
                         <FormDescription>Select multiple, if any</FormDescription>
                         <FormMessage />

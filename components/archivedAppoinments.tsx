@@ -61,7 +61,7 @@ export default function Archive() {
     <section className="px-4 flex justify-between items-center h-full">
       <div className="flex flex-col gap-4">
         <Dialog>
-          <DialogContent className="sm:max-w-[600px] !rounded-xl bg-gray-300">
+          <DialogContent className="sm:max-w-[1000px] !rounded-xl bg-gray-300 max-h-[80vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Archived Appointments</DialogTitle>
             </DialogHeader>

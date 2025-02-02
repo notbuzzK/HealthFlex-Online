@@ -28,11 +28,11 @@ const UserAppointmentsTable = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "pending":
-        return "text-[#2d698d]";
+        return "text-[#6b26ff]";
       case "approved":
-        return "text-[#23346a]";
+        return "text-[#3db545]";
       case "cancelled":
-        return "text-[#292839]";
+        return "text-[#FF4F4E]";
       default:
         return "text-gray-500";
     }

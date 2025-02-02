@@ -91,14 +91,23 @@ export default function PatientForm() {
   
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      await registerUser(values); // Call the utility function
-      toast.success("Registration successful!"); // Success notification
+      const result = await registerUser(values);
+      if (result.success) {
+        toast.success("Registration successful!");
+        handleReroute();
+      } else {
+        toast.error("Registration failed. A user with this email already exists");
+      }
     } catch (error) {
-      const errorAsError = error as Error;
-      toast.error(errorAsError.message || "Registration failed. Please try again."); // Error notification
+      toast.error(error.message || "Registration failed. Please try again.");
     }
   }
   
+  const handleReroute = () => {
+    setTimeout(() => {
+      window.location.href = "/src/login";
+    }, 1000); 
+  };
 
   return (
     <Form {...form}>
